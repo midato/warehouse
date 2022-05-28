@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ProtectedModule } from './protected/protected.module';
@@ -22,24 +24,25 @@ import { ResetPasswordComponent } from './anonymous/components/reset-password/re
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
-    ResetPasswordComponent,
+    ResetPasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     ProtectedModule,
     ProtectedRoutingModule,
-    SharedModule,
-    SharedRoutingModule
+    SharedModule
   ],
   providers: [
-    {
+    /*{
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptorService,
       multi: true
-    }
+    }*/
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

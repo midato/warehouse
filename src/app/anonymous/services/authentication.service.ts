@@ -37,7 +37,7 @@ export class AuthenticationService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
+    private router: Router
   ) {
   }
 
@@ -138,7 +138,7 @@ export class AuthenticationService {
   }
 
   login(body: LoginRequest): Observable<LoginResponse> {
-    const baseUrl = `${ this.NG_APP_EWH_BASE_URL }${ this.NG_APP_EWH_PREFIX }/index.php/acceso/login/login/`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/acceso/login/login/`;
     /* console.log(baseUrl); */
     // @ts-ignore
     // delete body.esRecuerdame;

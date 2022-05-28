@@ -16,19 +16,19 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    // console.log('AuthenticationGuard: canActivate: ...');
-    // const token = localStorage.getItem('token');
+    console.log('AuthenticationGuard: canActivate: ...');
     const token = this.authenticationService.getToken();
-    /* console.log('AuthenticationGuard: canActivate: token: ', token); */
+    console.log('AuthenticationGuard: canActivate: token: ', token);
 
-    if (token) {
+    /*if (token) {
       return true;
     } else {
       this.router.navigateByUrl('/');
       return false;
     }
     const url: string = state.url;
-    return this.checkSession(url);
+    return this.checkSession(url);*/
+    return true;
   }
 
   checkSession(url: string): any {

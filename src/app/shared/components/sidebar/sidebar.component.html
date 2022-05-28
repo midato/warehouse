@@ -225,31 +225,42 @@
   <div class="position-sticky pt-3">
     <ul class="nav flex-column">
       <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="clasificaciones.html">
+        <a class="nav-link"
+           aria-current="page"
+           routerLinkActive="active"
+           [routerLink]="['/protected/rankings']">
           <span data-feather="home" class="align-text-bottom"></span>
           Clasificaciones
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="proveedores.html">
+        <a class="nav-link"
+           routerLinkActive="active"
+           [routerLink]="['/protected/providers']">
           <span data-feather="file" class="align-text-bottom"></span>
           Proveedores
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="dashboard.html">
+        <a class="nav-link"
+           routerLinkActive="active"
+           [routerLink]="['/protected/products']">
           <span data-feather="shopping-cart" class="align-text-bottom"></span>
           Productos
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="almacenes.html">
+        <a class="nav-link"
+           routerLinkActive="active"
+           [routerLink]="['/protected/stocks']">
           <span data-feather="shopping-cart" class="align-text-bottom"></span>
           Almacenes
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="usuarios.html">
+        <a class="nav-link"
+           routerLinkActive="active"
+           [routerLink]="['/protected/users']">
           <span data-feather="users" class="align-text-bottom"></span>
           Usuarios
         </a>

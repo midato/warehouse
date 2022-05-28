@@ -7,11 +7,21 @@ import { SharedRoutingModule } from "../shared/shared-routing.module";
 
 import { LayoutProtectedComponent } from './components/layout-protected.component';
 import { HomeComponent } from './components/home/home.component';
+import { RankingsComponent } from './components/rankings/rankings.component';
+import { ProvidersComponent } from './components/providers/providers.component';
+import { ProductsComponent } from './components/products/products.component';
+import { StocksComponent } from './components/stocks/stocks.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     LayoutProtectedComponent,
+    RankingsComponent,
+    ProvidersComponent,
+    ProductsComponent,
+    StocksComponent,
+    UsersComponent,
   ],
   imports: [
     CommonModule,

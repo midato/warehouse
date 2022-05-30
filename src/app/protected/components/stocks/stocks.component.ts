@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StocksComponent implements OnInit {
 
-  constructor() { }
+  loading: false;
+  stocks: any;
+
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  remove(stock: any, i: number) {
   }
 
 }

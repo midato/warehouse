@@ -14,7 +14,7 @@
 </div>
 
 
-<table *ngIf="!loading && stocks.length > 0"
+<table *ngIf="!loading && stocks?.length > 0"
        class="table mt-3 animated fadeIn faster animated fadeIn faster">
   <thead class="thead-dark">
   <tr>
@@ -54,7 +54,7 @@
   </tbody>
 </table>
 
-<div *ngIf="!loading && stocks.length === 0"
+<div *ngIf="!loading && stocks?.length === 0"
      class="alert alert-warning text-center mt-3 animated fadeIn faster">
   <h4 class="alert-heading">No hay registros</h4>
   <p>

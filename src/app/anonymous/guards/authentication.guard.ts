@@ -17,24 +17,24 @@ export class AuthenticationGuard implements CanActivate {
     state: RouterStateSnapshot
   ) {
     console.log('AuthenticationGuard: canActivate: ...');
-    const token = this.authenticationService.getToken();
-    console.log('AuthenticationGuard: canActivate: token: ', token);
+    const apiKey = this.authenticationService.getApikey();
+    console.log('AuthenticationGuard: canActivate: apiKey: ', apiKey);
 
-    /*if (token) {
+    if (apiKey) {
       return true;
     } else {
       this.router.navigateByUrl('/');
       return false;
     }
     const url: string = state.url;
-    return this.checkSession(url);*/
-    return true;
+    return this.checkSession(url);
+    // return true;
   }
 
   checkSession(url: string): any {
     /* console.log('checkSession: url: ', url); */
     this.authenticationService.redirectUrl = url;
-    if (this.authenticationService.getToken()) {
+    if (this.authenticationService.getApikey()) {
       /* console.log('Guard: User is in VALID SESSION'); */
       if (!this.authenticationService.isTokenExpired()) {
         return true;

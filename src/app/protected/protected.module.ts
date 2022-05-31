@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { NgxSpinnerModule } from 'ngx-spinner';
+
 import { SharedModule } from "../shared/shared.module";
 import { SharedRoutingModule } from "../shared/shared-routing.module";
 
@@ -29,6 +31,7 @@ import { UsersComponent } from './components/users/users.component';
     ReactiveFormsModule,
     SharedModule,
     SharedRoutingModule,
+    NgxSpinnerModule
   ]
 })
 export class ProtectedModule {

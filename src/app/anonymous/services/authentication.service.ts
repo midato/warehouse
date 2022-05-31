@@ -13,15 +13,19 @@ import { LoginResponse } from '../interfaces/login-response.interface';
 
 
 import { environment } from '../../../environments/environment';
+import { TokenRequest } from '../interfaces/token-request.interface';
+import { TokenResponse } from '../interfaces/token-response.interface';
 
 const CRYPTO_TOKEN = 'crypto_token';
 const KEYS = '_unknown';
+const API_KEY = '_ak';
 
 const TOKEN = 'token';
 const EXPIRES_IN = 'expiresIn';
 const ACCESS_ID = 'idAcceso';
 
 // const USER_NAME = 'correoElectronico';
+const USER_ID = 'pk';
 const USER_NAME = 'userName';
 const USER_ROLE = 'userRole';
 
@@ -65,21 +69,28 @@ export class AuthenticationService {
     sessionStorage.removeItem(ACCESS_ID);
   }
 
-  saveToken(token: string): void {
-    sessionStorage.setItem(TOKEN, token);
-
-    const hoy = new Date();
-    hoy.setSeconds(3599);
-    localStorage.setItem(EXPIRES_IN, hoy.getTime().toString());
+  saveUserId(userId: string): void {
+    sessionStorage.setItem(USER_ID, userId);
   }
 
-  getToken(): string {
-    return <string>sessionStorage.getItem(TOKEN);
+  getUserId() {
+    return <string>sessionStorage.getItem(USER_ID);
   }
 
-  removeToken(): void {
-    sessionStorage.removeItem(TOKEN);
-    localStorage.removeItem(EXPIRES_IN);
+  removeUserId(): void {
+    sessionStorage.removeItem(USER_ID);
+  }
+
+  saveApikey(apiKey: string): void {
+    sessionStorage.setItem(API_KEY, apiKey);
+  }
+
+  getApikey() {
+    return <string>sessionStorage.getItem(API_KEY);
+  }
+
+  removeApikey(): void {
+    sessionStorage.removeItem(API_KEY);
   }
 
   saveUsername(email: string): void {
@@ -122,7 +133,7 @@ export class AuthenticationService {
   }
 
   isTokenExpired(): boolean {
-    if (this.getToken().length < 2) {
+    if (this.getApikey().length < 2) {
       return false;
     }
 
@@ -161,15 +172,26 @@ export class AuthenticationService {
   }
 
   async logout() {
-    this.removeToken();
+    this.removeApikey();
+    this.removeUserId();
     this.removeUsername();
     this.removeUserRole();
     // this.removeAccessResponse();
     this.removeSecurityKeys();
-    this.removeToken();
     this.removeCryptoToken();
     this.removeAccessId();
     await this.router.navigateByUrl('/landing');
+  }
+
+  tokenAdd(body: TokenRequest): Promise<TokenResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/tokens/tokens/obtener_token_agregar`;
+    const headers = new HttpHeaders()
+      // .set('Access-Control-Allow-Headers', 'true');
+      // .set('x-id-acceso', `${ this.getAccessId() }`)
+      .set('x-api-key', `${this.getApikey()}`);
+    // console.log(headers);
+    return this.http.post<TokenResponse>(baseUrl, body, {headers}).toPromise();
+    // return this.http.post<TokenResponse>(baseUrl, body);
   }
 
   // postForgot(passwordForgot: PasswordForgot): Observable<PasswordResponse> {

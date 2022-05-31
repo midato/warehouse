@@ -83,6 +83,8 @@ export class LoginComponent implements OnInit {
         if (this.loginForm?.get('rememberMe')?.value) {
           this.authenticationService.saveUsername(this.loginForm?.value.username);
         } else {
+          this.authenticationService.removeApikey();
+          this.authenticationService.removeUserId();
           this.authenticationService.removeUsername();
           this.authenticationService.removeUserRole();
         }
@@ -90,7 +92,8 @@ export class LoginComponent implements OnInit {
         // const decryptedResponse = await this.cryptoService.decryptObject(response);
         /* console.log(decryptedResponse); */
         // this.agentId = response.resultado.idAgente;
-        this.authenticationService.saveToken(response.usuario[0].user_api_key);
+        this.authenticationService.saveApikey(response.usuario[0].user_api_key);
+        this.authenticationService.saveUserId(response.usuario[0].id_user);
         this.authenticationService.saveUsername(this.loginForm?.value.username);
         this.authenticationService.saveUserRole(response.usuario[0].usr_profile_name);
         await this.spinner.hide();
@@ -154,7 +157,7 @@ export class LoginComponent implements OnInit {
   }
 
   async goToHome() {
-    await this.router.navigateByUrl('home');
+    await this.router.navigateByUrl('protected/home');
   }
 
 }

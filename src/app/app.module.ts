@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ProtectedModule } from './protected/protected.module';
@@ -33,14 +34,15 @@ import { ResetPasswordComponent } from './anonymous/components/reset-password/re
     HttpClientModule,
     ProtectedModule,
     ProtectedRoutingModule,
-    SharedModule
+    SharedModule,
+    NgxSpinnerModule
   ],
   providers: [
-    /*{
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptorService,
       multi: true
-    }*/
+    }
   ],
   bootstrap: [ AppComponent ]
 })

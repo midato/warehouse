@@ -24,10 +24,10 @@ import { environment } from '../../../environments/environment';
 })
 export class AuthenticationInterceptorService implements HttpInterceptor {
   // accessResponse: KeysResponse = {} as KeysResponse;
-  keysLoaded = false;
-  cryptoToken = '';
-  token = '';
-  accessId = '';
+  // keysLoaded = false;
+  // cryptoToken = '';
+  apiKey = '';
+  // accessId = '';
 
   env = environment.NG_APP_EWH_ENVIRONMENT;
 
@@ -45,10 +45,10 @@ export class AuthenticationInterceptorService implements HttpInterceptor {
     // this.accessId = this.authenticationService.getAccessId();
     /* console.log(this.accessId); */
 
-    if (request.headers.has(InterceptorSkipHeader)) {
+    /*if (request.headers.has(InterceptorSkipHeader)) {
       const headers = request.headers.delete(InterceptorSkipHeader);
-      return next.handle(request.clone({ headers }));
-    }
+      return next.handle(request.clone({headers}));
+    }*/
 
     /*if (this.env === 'dev') {
       request = request.clone({
@@ -88,17 +88,12 @@ export class AuthenticationInterceptorService implements HttpInterceptor {
       );
     }*/
 
-    this.token = this.authenticationService.getToken();
-    console.log('token: ', this.token);
-    if (this.token) {
+    this.apiKey = this.authenticationService.getApikey();
+    console.log('apiKey: ', this.apiKey);
+    if (this.apiKey) {
       request = request.clone({
           setHeaders: {
-            // 'x-token-acceso': `${token}`
-            // 'x-token-acceso': 'L/hKy3a3nTbqMBJGQAc'
-            'token': `${ this.token }`,
-            // 'token': `${this.cryptoToken}`,
-            // 'x-id-acceso': `${this.accessId}`,
-            // 'x-token-acceso': `${ this.token }`
+            'x-api-key': `${this.apiKey}`
           }
         }
       );
@@ -106,7 +101,6 @@ export class AuthenticationInterceptorService implements HttpInterceptor {
 
     console.log(request.headers.has('Content-Type'));
     if (!request.headers.has('Content-Type')) {
-      console.log('dentro....');
       request = request.clone({
         setHeaders: {
           'Content-Type': 'application/json',
@@ -141,7 +135,7 @@ export class AuthenticationInterceptorService implements HttpInterceptor {
         catchError((error: HttpErrorResponse) => {
           // console.log('ERROR:   ', error);
           if (error.status === 401) {
-            this.router.navigate([ 'login' ]).then(_ => console.log(''));
+            this.router.navigate(['login']).then(_ => console.log(''));
           }
           return throwError(error);
         })

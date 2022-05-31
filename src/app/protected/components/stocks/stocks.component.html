@@ -1,74 +1,196 @@
-
-<h1>Almacenes</h1>
-<hr>
-
-
-<div class="row">
-  <div class="col text-right">
-    <button routerLink="/stock/nuevo"
-            class="btn btn-primary">
-      <i class="fa fa-plus"></i>
-      Agregar
-    </button>
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Almacenes</h1>
+  <div id="add"
+       class="btn bg-primary rounded-circle d-flex"
+       style="width: 35px;"
+       data-bs-toggle="modal"
+       data-bs-target="#addModal">
+    <span class="text-center">+</span>
   </div>
 </div>
 
+<div id="container" class="container">
 
-<table *ngIf="!loading && stocks?.length > 0"
-       class="table mt-3 animated fadeIn faster animated fadeIn faster">
-  <thead class="thead-dark">
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col">Nombre</th>
-    <th scope="col">Poder</th>
-    <th scope="col">Vivo</th>
-    <th scope="col">Tools</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let stock of stocks; let i = index">
-    <th scope="row">{{ i + 1 }}</th>
-    <td>{{ stock.nombre }}</td>
-    <td>{{ stock.poder }}</td>
-    <td>
+  <div class="container d-flex flex-wrap align-items-center">
 
-      <label *ngIf="stock.vivo" class="badge badge-success">Vivo</label>
-      <label *ngIf="!stock.vivo" class="badge badge-danger">Muerto</label>
+    <div *ngFor="let stock of stocks; index as i; first as isFirst"
+         class="m-2 card"
+         style="max-width: 230px;">
+      <div class="card-body">
+        <h5 class="card-title">{{stock.nombre}}</h5>
+        <h6 class="card-subtitle">{{stock.descripcion}}</h6>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
 
-    </td>
-    <td>
+    <!--<div class="m-2 card" style="max-width: 230px;">
+      <div class="card-body">
+        <h5 class="card-title">Mariscos</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
 
-      <button class="btn btn-info mr-1"
-              [routerLink]="['/stock', stock.id ]">
-        <i class="fa fa-pen"></i>
-      </button>
-
-      <button class="btn btn-danger"
-              (click)="remove( stock, i ) ">
-        <i class="fa fa-trash"></i>
-      </button>
+    <div class="m-2 card" style="max-width: 230px;">
+      <div class="card-body">
+        <h5 class="card-title">Vinos y Licores</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>-->
 
 
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <!--<div class="m-2 card">9</div>
+    <div class="m-2 card">10</div>
+    <div class="m-2 card">11</div>
+    <div class="m-2 card">12</div>
+    <div class="m-2 card">13</div>
+    <div class="m-2 card">14</div>
+    <div class="m-2 card">15</div>
+    <div class="m-2 card">16</div>
+    <div class="m-2 card">17</div>
+    <div class="m-2 card">18</div>
+    <div class="m-2 card">19</div>
+    <div class="m-2 card">20</div>-->
+  </div>
 
-<div *ngIf="!loading && stocks?.length === 0"
-     class="alert alert-warning text-center mt-3 animated fadeIn faster">
-  <h4 class="alert-heading">No hay registros</h4>
-  <p>
-    <i class="fa fa-exclamation fa-2x"></i>
-  </p>
+  <div style="display: flex;">
+
+    <!--<div class="m-2 card" style="display: flex; min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Fruta</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="display: flex; min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Verdura</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Abarrote</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Condimento</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Marisco</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Pollo</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Cerdo</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>
+
+    <div class="m-2 card" style="min-width: 200px;">
+      <div class="card-body">
+        <h5 class="card-title">Res</h5>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+      </div>
+    </div>-->
+  </div>
+
 </div>
 
-<div *ngIf="loading"
-     class="alert alert-info text-center mt-3 animated fadeIn faster">
-  <h4 class="alert-heading">Cargando</h4>
-  <p>
-    <i class="fa fa-sync-alt fa-spin fa-2x"></i>
-  </p>
-  <p class="mb-0">
-    Espere por favor
-  </p>
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form
+    id="stockForm"
+    autocomplete="off"
+    [formGroup]="stockForm"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nuevo almacen</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text" id="basic-addon1">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Nombre de almacén"
+                   aria-label="nombre"
+                   aria-describedby="basic-addon1"
+                   id="nombre"
+                   name="nombre"
+                   formControlName="nombre"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formStockReference.nombre.touched && formStockReference.nombre.errors?.required">
+            * El nombre es obligatorio
+          </div>
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Descripción"
+                   aria-label="descripcion"
+                   aria-describedby="descripcion"
+                   id="descripcion"
+                   name="descripcion"
+                   formControlName="descripcion"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formStockReference.descripcion.touched && formStockReference.descripcion.errors?.required">
+            * La descripción es obligatoria
+          </div>
+
+          <div class="input-group mt-3 mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                id="estatus"
+                type="checkbox"
+                formControlName="estatus"
+              />
+              <label for="estatus" class="form-check-label">
+                Estatus
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-spinner layerName="sp" [fullScreen]=false></app-spinner>
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  (click)="onSave()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

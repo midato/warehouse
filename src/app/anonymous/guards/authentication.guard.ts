@@ -16,10 +16,7 @@ export class AuthenticationGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    console.log('AuthenticationGuard: canActivate: ...');
     const apiKey = this.authenticationService.getApikey();
-    console.log('AuthenticationGuard: canActivate: apiKey: ', apiKey);
-
     if (apiKey) {
       return true;
     } else {
@@ -32,15 +29,12 @@ export class AuthenticationGuard implements CanActivate {
   }
 
   checkSession(url: string): any {
-    /* console.log('checkSession: url: ', url); */
     this.authenticationService.redirectUrl = url;
     if (this.authenticationService.getApikey()) {
-      /* console.log('Guard: User is in VALID SESSION'); */
       if (!this.authenticationService.isTokenExpired()) {
         return true;
       }
     }
-    /* console.log('Guard: User is in INVALID SESSION'); */
     this.router.navigate([ '/login' ]).then(() => false);
   }
 

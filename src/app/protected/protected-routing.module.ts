@@ -7,14 +7,14 @@ import { LayoutProtectedComponent } from './components/layout-protected.componen
 const protectedRoutes: Routes = [
   {
     path: 'protected', component: LayoutProtectedComponent,
-    canActivate: [AuthenticationGuard],
+    canActivate: [ AuthenticationGuard ],
     loadChildren: () => import('./protected-lazy-routes.module').then(m => m.ProtectedLazyRoutesModule)
-  },
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(protectedRoutes)],
-  exports: [RouterModule]
+  imports: [ RouterModule.forChild(protectedRoutes) ],
+  exports: [ RouterModule ]
 })
 export class ProtectedRoutingModule {
 }

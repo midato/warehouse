@@ -21,10 +21,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {useHash: true, scrollOffset: [0, 0], scrollPositionRestoration: 'top'}),
-    ProtectedRoutingModule,
+    RouterModule.forRoot(routes, {useHash: true, scrollOffset: [ 0, 0 ], scrollPositionRestoration: 'top'}),
+    ProtectedRoutingModule
   ],
-  exports: [RouterModule]
+  exports: [ RouterModule ]
 })
 export class AppRoutingModule {
 }

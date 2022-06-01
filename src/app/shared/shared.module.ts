@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     HeaderComponent,
     PageNotFoundComponent,
     SidebarComponent,
-    SpinnerComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +39,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     HeaderComponent,
     PageNotFoundComponent,
     SidebarComponent,
-    SpinnerComponent,
+    SpinnerComponent
   ],
   providers: [
     // {provide: MAT_DATE_LOCALE, useValue: 'es-MX'},

@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import { SharedModule } from "../shared/shared.module";
-import { SharedRoutingModule } from "../shared/shared-routing.module";
+import { SharedModule } from '../shared/shared.module';
+import { SharedRoutingModule } from '../shared/shared-routing.module';
 
 import { LayoutProtectedComponent } from './components/layout-protected.component';
 import { HomeComponent } from './components/home/home.component';
@@ -23,7 +23,7 @@ import { UsersComponent } from './components/users/users.component';
     ProvidersComponent,
     ProductsComponent,
     StocksComponent,
-    UsersComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

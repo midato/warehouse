@@ -1,32 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
 
-import { Alerts } from "../../../shared/utils";
-import { LoginRequest } from '../../../anonymous/interfaces/login-request.interface';
-import { StockRequest } from '../../interfaces/stock-request.interface';
+import { Alerts } from '../../../shared/utils';
+import { StockAddRequest } from '../../interfaces/stock-add-request.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
 import { AuthenticationService } from '../../../anonymous/services/authentication.service';
 import { ProtectedService } from '../../services/protected.service';
-import { StockResponse } from '../../interfaces/stock-response.interface';
-import { StockListResponse } from '../../interfaces/stock-list-response.interface';
+import { Almacen, StockListResponse } from '../../interfaces/stock-list-response.interface';
+import { StockEditRequest } from '../../interfaces/stock-edit-request.interface';
+import { TokenRemoveRequest } from '../../../anonymous/interfaces/token-remove-request.interface';
 
 @Component({
   selector: 'app-stocks',
   templateUrl: './stocks.component.html',
-  styleUrls: ['./stocks.component.scss']
+  styleUrls: [ './stocks.component.scss' ]
 })
 export class StocksComponent implements OnInit {
+  @ViewChild('closeButton') closeButton;
 
   stockForm: FormGroup;
+  stock: Almacen;
   tokenRequest: TokenRequest = {} as TokenRequest;
-  stockRequest: StockRequest = {} as StockRequest;
+  tokenRemoveRequest: TokenRemoveRequest = {} as TokenRemoveRequest;
+  stockAddRequest: StockAddRequest = {} as StockAddRequest;
+  stockEditRequest: StockEditRequest = {} as StockEditRequest;
 
   loading: false;
   stocks: any;
   userId: string;
+  action: string;
+  modal: any;
 
   constructor(
     private spinner: NgxSpinnerService,
@@ -39,24 +45,30 @@ export class StocksComponent implements OnInit {
 
   ngOnInit(): void {
     this.userId = sessionStorage.getItem('pk');
-
     this.stockForm = this.fb.group({
-      nombre: ["", [Validators.required]],
-      descripcion: ["", Validators.required],
-      estatus: [false, Validators.required],
+      nombre: [ '', [ Validators.required ] ],
+      descripcion: [ '', Validators.required ],
+      estatus: [ false, Validators.required ]
     });
 
     setTimeout(async () => {
       await this.retrieveStocks();
     }, 100);
+  }
 
+  closeModal() {
+    this.closeButton.nativeElement.click();
+  }
+
+  setAction(action: string) {
+    this.action = action;
   }
 
   resetStock() {
     const oStock = {
       nombre: sessionStorage.getItem('nombre'),
       descripcion: sessionStorage.getItem('descripcion'),
-      estatus: false
+      estatus: sessionStorage.getItem('estatus')
     };
     return oStock;
   }
@@ -68,11 +80,8 @@ export class StocksComponent implements OnInit {
         id_almacen: 0
       }
     };
-    console.log(allStocksRequest);
-
     const response: StockListResponse = await this.protectedService.retrieveStock(allStocksRequest);
     this.stocks = response.almacenes;
-    console.log(this.stocks);
   }
 
   get formStockReference() {
@@ -81,7 +90,6 @@ export class StocksComponent implements OnInit {
 
   async onSave() {
     await this.spinner.show('sp');
-    console.log(this.stockForm.value);
     if (this.stockForm.invalid) {
       return Object.values(this.stockForm.controls).forEach((control) => {
         if (control instanceof FormGroup) {
@@ -103,41 +111,117 @@ export class StocksComponent implements OnInit {
           }
         }
       };
-      const tokenAddResponse = await this.authenticationService.tokenAdd(this.tokenRequest);
-      console.log(tokenAddResponse);
 
-      this.stockRequest = {
+      let tokenResponse: any;
+      let response;
+      switch (this.action) {
+        case 'new':
+          tokenResponse = await this.authenticationService.tokenAdd(this.tokenRequest);
+          this.stockAddRequest = {
+            json: {
+              user_data: {
+                id_user: +this.userId,
+                user_active: 1
+              },
+              add_data: {
+                nombre: this.stockForm.value.nombre,
+                descripcion: this.stockForm.value.descripcion,
+                estatus: this.stockForm.value.estatus ? 1 : 0
+              },
+              add_token: tokenResponse.add_token
+            }
+          };
+          response = await this.protectedService.saveStock(this.stockAddRequest);
+          break;
+
+        case 'edit':
+          tokenResponse = await this.authenticationService.tokenEdit(this.tokenRequest);
+          this.stockEditRequest = {
+            json: {
+              user_data: {
+                id_user: +this.userId,
+                user_active: 1
+              },
+              edit_data: {
+                id: +this.stock.id,
+                nombre: this.stockForm.value.nombre,
+                descripcion: this.stockForm.value.descripcion,
+                estatus: this.stockForm.value.estatus ? 1 : 0
+              },
+              edit_token: tokenResponse.edit_token
+            }
+          };
+          response = await this.protectedService.editStock(this.stockEditRequest);
+          break;
+
+        default:
+          console.log('default...');
+          break;
+      }
+      await this.retrieveStocks();
+      this.stockForm.reset(this.resetStock());
+      await this.spinner.hide('sp');
+      await this.router.navigateByUrl('protected/stocks');
+    } catch (e) {
+      console.log(e);
+      await this.spinner.hide('sp');
+      const message = e.message; // error.error.detalles[0];
+      await Alerts.customFailedButton('Easy Warehouse', 'error', message);
+    }
+  }
+
+  loadStockForm(stock: Almacen) {
+    this.stockForm.reset({
+      nombre: stock.nombre,
+      descripcion: stock.descripcion,
+      estatus: +stock.estatus === 1
+    });
+  }
+
+  editStock(stock: Almacen) {
+    this.stock = stock;
+    this.setAction('edit');
+    this.loadStockForm(stock);
+  }
+
+  selectStock(stock: Almacen) {
+    this.stock = stock;
+  }
+
+  async removeStock() {
+    try {
+      await this.spinner.show('sr');
+      this.tokenRequest = {
+        json: {
+          user_data: {
+            id_user: +this.userId,
+            user_active: 1
+          }
+        }
+      };
+      const tokenResponse = await this.authenticationService.tokenRemove(this.tokenRequest);
+      this.tokenRemoveRequest = {
         json: {
           user_data: {
             id_user: +this.userId,
             user_active: 1
           },
-          add_data: {
-            nombre: this.stockForm.value.nombre,
-            descripcion: this.stockForm.value.descripcion,
-            estatus: this.stockForm.value.estatus ? 1 : 0
+          del_data: {
+            id: +this.stock.id
           },
-          add_token: tokenAddResponse.add_token
+          del_token: tokenResponse.del_token
         }
       };
-      console.log(this.stockRequest);
-
-      const response = await this.protectedService.saveStock(this.stockRequest);
+      const response = await this.protectedService.removeStock(this.tokenRemoveRequest);
       console.log(response);
       await this.retrieveStocks();
       this.stockForm.reset(this.resetStock());
-
-      await this.spinner.hide('sp');
-      await this.router.navigateByUrl("protected/stocks");
-    } catch (error) {
-      console.log(error);
-      await this.spinner.hide('sp');
-      const message = error.message; // error.error.detalles[0];
-      await Alerts.customFailedButton("Easy Warehouse", "error", message);
+      await this.spinner.hide('sr');
+      this.closeModal();
+    } catch (e) {
+      console.log(e);
+      await this.spinner.hide('sr');
     }
-  }
-
-  remove(stock: any, i: number) {
   }
 
 }

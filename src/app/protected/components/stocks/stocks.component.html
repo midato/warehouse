@@ -5,7 +5,9 @@
        class="btn bg-primary rounded-circle d-flex"
        style="width: 35px;"
        data-bs-toggle="modal"
-       data-bs-target="#addModal">
+       data-bs-target="#stockModal"
+       (click)="setAction('new')"
+  >
     <span class="text-center">+</span>
   </div>
 </div>
@@ -20,21 +22,34 @@
       <div class="card-body">
         <h5 class="card-title">{{stock.nombre}}</h5>
         <h6 class="card-subtitle">{{stock.descripcion}}</h6>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a class="btn btn-primary mt-3"
+           data-bs-toggle="modal"
+           data-bs-target="#stockModal"
+           (click)="editStock(stock)"
+        >
+          Editar
+        </a>
+        <a class="btn btn-primary mt-3"
+           data-bs-toggle="modal"
+           data-bs-target="#stockRemoveModal"
+           (click)="selectStock(stock)"
+        >
+          Borrar
+        </a>
       </div>
     </div>
 
     <!--<div class="m-2 card" style="max-width: 230px;">
       <div class="card-body">
         <h5 class="card-title">Mariscos</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="max-width: 230px;">
       <div class="card-body">
         <h5 class="card-title">Vinos y Licores</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>-->
 
@@ -58,78 +73,82 @@
     <!--<div class="m-2 card" style="display: flex; min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Fruta</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="display: flex; min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Verdura</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Abarrote</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Condimento</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Marisco</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Pollo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Cerdo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>
 
     <div class="m-2 card" style="min-width: 200px;">
       <div class="card-body">
         <h5 class="card-title">Res</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
+        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
       </div>
     </div>-->
   </div>
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- New User Modal -->
+<div class="modal fade"
+     id="stockModal"
+     tabindex="-1"
+     aria-labelledby="stockModalLabel"
+     aria-hidden="true">
   <form
-    id="stockForm"
+    id="stockEForm"
     autocomplete="off"
     [formGroup]="stockForm"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Nuevo almacen</h5>
+          <h5 class="modal-title" id="stockModalLabel">Nuevo almacen</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="input-group mt-3 mb-1">
-            <span class="input-group-text" id="basic-addon1">@</span>
+            <span class="input-group-text" id="basic-addon2">@</span>
             <input type="text"
                    class="form-control"
                    placeholder="Nombre de almacén"
@@ -165,8 +184,9 @@
             <div class="form-check">
               <input
                 class="form-check-input"
-                id="estatus"
                 type="checkbox"
+                id="estatus"
+                name="estatus"
                 formControlName="estatus"
               />
               <label for="estatus" class="form-check-label">
@@ -193,4 +213,47 @@
       </div>
     </div>
   </form>
+</div>
+
+<!-- Remove User Modal -->
+<div class="modal fade"
+     id="stockRemoveModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="stockRemoveModalLabel"
+     aria-hidden="true"
+     [ngStyle]="{'modal':modal}"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stockRemoveModalLabel">Borrar usuario</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>-->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>¿Estás seguro?</h5>
+        <div class="text-center">Se borrará <b>{{stock?.nombre}}</b></div>
+      </div>
+      <div class="modal-footer">
+        <app-spinner layerName="sr" [fullScreen]=false></app-spinner>
+        <button #closeButton
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+          No
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="removeStock()"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

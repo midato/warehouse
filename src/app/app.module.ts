@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
 import { ReactiveFormsModule } from '@angular/forms';
+
 import { NgxSpinnerModule } from 'ngx-spinner';
+
+import { AuthenticationInterceptorService } from './anonymous/interceptors/authentication-interceptor.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ProtectedModule } from './protected/protected.module';
 import { ProtectedRoutingModule } from './protected/protected-routing.module';
 import { SharedModule } from './shared/shared.module';
-import { SharedRoutingModule } from './shared/shared-routing.module';
-
-import { AuthenticationInterceptorService } from './anonymous/interceptors/authentication-interceptor.service';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './anonymous/components/login/login.component';

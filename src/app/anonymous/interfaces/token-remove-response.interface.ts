@@ -1,8 +1,8 @@
-export interface TokenResponse {
+export interface TokenRemoveResponse {
   log: string;
   err_bool: number;
   token_error: boolean;
-  add_token: string;
+  del_token: string;
   data: Data;
 }
 

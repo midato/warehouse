@@ -1,15 +1,12 @@
-export interface StockResponse {
+export interface StockEditResponse {
   log: Log;
   err_bool: number;
-  ins_almacen: InsAlmacen;
+  edit_almacen: EditAlmacen;
 }
 
-export interface InsAlmacen {
+export interface EditAlmacen {
   error: number;
   error_desc: string;
-  almacen_added: number;
-  almacen_added_id: number;
-  deleted_token: number;
 }
 
 export interface Log {
@@ -18,11 +15,12 @@ export interface Log {
 
 export interface JSON {
   user_data: UserData;
-  add_data: AddData;
-  add_token: string;
+  edit_data: EditData;
+  edit_token: string;
 }
 
-export interface AddData {
+export interface EditData {
+  id: number;
   nombre: string;
   descripcion: string;
   estatus: number;

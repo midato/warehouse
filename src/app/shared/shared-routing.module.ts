@@ -7,13 +7,13 @@ import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 
 const sharedRoutes: Routes = [
-  {path: 'header', component: HeaderComponent, canActivate: [AuthenticationGuard]},
-  {path: 'footer', component: FooterComponent, canActivate: [AuthenticationGuard]},
+  {path: 'header', component: HeaderComponent, canActivate: [ AuthenticationGuard ]},
+  {path: 'footer', component: FooterComponent, canActivate: [ AuthenticationGuard ]}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(sharedRoutes)],
-  exports: [RouterModule],
+  imports: [ RouterModule.forChild(sharedRoutes) ],
+  exports: [ RouterModule ]
 })
 export class SharedRoutingModule {
 }

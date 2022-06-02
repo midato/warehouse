@@ -1,4 +1,4 @@
-<div
+<!--<div
   class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Almacenes</h1>
   <div id="add"
@@ -10,63 +10,75 @@
   >
     <span class="text-center">+</span>
   </div>
-</div>
+</div>-->
 
 <div id="container" class="container">
-
-  <div class="container d-flex flex-wrap align-items-center">
-
-    <div *ngFor="let stock of stocks; index as i; first as isFirst"
-         class="m-2 card"
-         style="max-width: 230px;">
-      <div class="card-body">
-        <h5 class="card-title">{{stock.nombre}}</h5>
-        <h6 class="card-subtitle">{{stock.descripcion}}</h6>
-        <a class="btn btn-primary mt-3"
-           data-bs-toggle="modal"
-           data-bs-target="#stockModal"
-           (click)="editStock(stock)"
-        >
-          Editar
-        </a>
-        <a class="btn btn-primary mt-3"
-           data-bs-toggle="modal"
-           data-bs-target="#stockRemoveModal"
-           (click)="selectStock(stock)"
-        >
-          Borrar
-        </a>
-      </div>
-    </div>
-
-    <!--<div class="m-2 card" style="max-width: 230px;">
-      <div class="card-body">
-        <h5 class="card-title">Mariscos</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-      <div class="card-body">
-        <h5 class="card-title">Vinos y Licores</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>-->
-
-
-    <!--<div class="m-2 card">9</div>
-    <div class="m-2 card">10</div>
-    <div class="m-2 card">11</div>
-    <div class="m-2 card">12</div>
-    <div class="m-2 card">13</div>
-    <div class="m-2 card">14</div>
-    <div class="m-2 card">15</div>
-    <div class="m-2 card">16</div>
-    <div class="m-2 card">17</div>
-    <div class="m-2 card">18</div>
-    <div class="m-2 card">19</div>
-    <div class="m-2 card">20</div>-->
+  <div id="add" class="bg-primary rounded-circle d-flex" data-bs-toggle="modal" data-bs-target="#stockModal">
+    <span class="text-center">+</span>
   </div>
+
+  <div *ngFor="let stock of stocks; index as i; first as isFirst"
+       class="cardClasif"
+       style="max-width: 230px;">
+    <div class="card-header d-flex justify-content-end">
+      <a data-bs-toggle="modal"
+         data-bs-target="#stockModal"
+         (click)="editStock(stock)">
+        <i class="fa-solid fa-pen me-3"></i>
+      </a>
+      <a data-bs-toggle="modal"
+         data-bs-target="#stockRemoveModal"
+         (click)="selectStock(stock)">
+        <i class="fa-regular fa-trash-can text-danger"></i>
+      </a>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{stock.nombre}}</h5>
+      <h6 class="card-subtitle">{{stock.descripcion}}</h6>
+      <!--<a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#stockModal"
+         (click)="editStock(stock)"
+      >
+        Editar
+      </a>
+      <a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#stockRemoveModal"
+         (click)="selectStock(stock)"
+      >
+        Borrar
+      </a>-->
+    </div>
+  </div>
+
+  <!--<div class="m-2 card" style="max-width: 230px;">
+    <div class="card-body">
+      <h5 class="card-title">Mariscos</h5>
+      <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
+    </div>
+  </div>
+
+  <div class="m-2 card" style="max-width: 230px;">
+    <div class="card-body">
+      <h5 class="card-title">Vinos y Licores</h5>
+      <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
+    </div>
+  </div>-->
+
+
+  <!--<div class="m-2 card">9</div>
+  <div class="m-2 card">10</div>
+  <div class="m-2 card">11</div>
+  <div class="m-2 card">12</div>
+  <div class="m-2 card">13</div>
+  <div class="m-2 card">14</div>
+  <div class="m-2 card">15</div>
+  <div class="m-2 card">16</div>
+  <div class="m-2 card">17</div>
+  <div class="m-2 card">18</div>
+  <div class="m-2 card">19</div>
+  <div class="m-2 card">20</div>-->
 
   <div style="display: flex;">
 

@@ -1,19 +1,10 @@
-<!--<div
-  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Almacenes</h1>
+<div id="container" class="container">
   <div id="add"
-       class="btn bg-primary rounded-circle d-flex"
-       style="width: 35px;"
+       class="bg-primary rounded-circle d-flex"
        data-bs-toggle="modal"
        data-bs-target="#stockModal"
-       (click)="setAction('new')"
+       (click)="resetForm()"
   >
-    <span class="text-center">+</span>
-  </div>
-</div>-->
-
-<div id="container" class="container">
-  <div id="add" class="bg-primary rounded-circle d-flex" data-bs-toggle="modal" data-bs-target="#stockModal">
     <span class="text-center">+</span>
   </div>
 
@@ -52,93 +43,6 @@
     </div>
   </div>
 
-  <!--<div class="m-2 card" style="max-width: 230px;">
-    <div class="card-body">
-      <h5 class="card-title">Mariscos</h5>
-      <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-    </div>
-  </div>
-
-  <div class="m-2 card" style="max-width: 230px;">
-    <div class="card-body">
-      <h5 class="card-title">Vinos y Licores</h5>
-      <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-    </div>
-  </div>-->
-
-
-  <!--<div class="m-2 card">9</div>
-  <div class="m-2 card">10</div>
-  <div class="m-2 card">11</div>
-  <div class="m-2 card">12</div>
-  <div class="m-2 card">13</div>
-  <div class="m-2 card">14</div>
-  <div class="m-2 card">15</div>
-  <div class="m-2 card">16</div>
-  <div class="m-2 card">17</div>
-  <div class="m-2 card">18</div>
-  <div class="m-2 card">19</div>
-  <div class="m-2 card">20</div>-->
-
-  <div style="display: flex;">
-
-    <!--<div class="m-2 card" style="display: flex; min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Fruta</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="display: flex; min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Verdura</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Abarrote</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Condimento</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Marisco</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Pollo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Cerdo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Res</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#stockModal">Editar</a>
-      </div>
-    </div>-->
-  </div>
-
 </div>
 
 <!-- New User Modal -->
@@ -156,7 +60,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="stockModalLabel">Nuevo almacen</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+          >
+          </button>
         </div>
         <div class="modal-body">
           <div class="input-group mt-3 mb-1">
@@ -217,6 +126,7 @@
           </button>
           <button type="button"
                   class="btn btn-primary"
+                  [disabled]="stockForm.invalid"
                   (click)="onSave()"
           >
             Guardar Cambios
@@ -269,3 +179,5 @@
     </div>
   </div>
 </div>
+
+<app-spinner layerName="gral" [fullScreen]=false></app-spinner>

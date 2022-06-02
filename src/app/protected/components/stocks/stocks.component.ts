@@ -20,6 +20,7 @@ import { TokenRemoveRequest } from '../../../anonymous/interfaces/token-remove-r
 })
 export class StocksComponent implements OnInit {
   @ViewChild('closeButton') closeButton;
+  // @ViewChild('stockModal') stockModal;
 
   stockForm: FormGroup;
   stock: Almacen;
@@ -44,15 +45,19 @@ export class StocksComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.spinner.show('gral');
+
     this.userId = sessionStorage.getItem('pk');
-    this.stockForm = this.fb.group({
+    this.resetForm();
+    /*this.stockForm = this.fb.group({
       nombre: [ '', [ Validators.required ] ],
       descripcion: [ '', Validators.required ],
       estatus: [ false, Validators.required ]
-    });
+    });*/
 
     setTimeout(async () => {
       await this.retrieveStocks();
+      await this.spinner.hide('gral');
     }, 100);
   }
 
@@ -60,8 +65,20 @@ export class StocksComponent implements OnInit {
     this.closeButton.nativeElement.click();
   }
 
+  /*openModal() {
+    this.stockModal.nativeElement.click();
+  }*/
+
   setAction(action: string) {
     this.action = action;
+  }
+
+  resetForm() {
+    this.stockForm = this.fb.group({
+      nombre: [ '', [ Validators.required ] ],
+      descripcion: [ '', Validators.required ],
+      estatus: [ false, Validators.required ]
+    });
   }
 
   resetStock() {
@@ -70,6 +87,7 @@ export class StocksComponent implements OnInit {
       descripcion: sessionStorage.getItem('descripcion'),
       estatus: sessionStorage.getItem('estatus')
     };
+    console.log(oStock);
     return oStock;
   }
 

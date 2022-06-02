@@ -15,8 +15,8 @@ const CRYPTO_TOKEN = 'crypto_token';
 const KEYS = '_unknown';
 const API_KEY = '_ak';
 
-const TOKEN = 'token';
-const EXPIRES_IN = 'expiresIn';
+// const TOKEN = 'token';
+// const EXPIRES_IN = 'expiresIn';
 const ACCESS_ID = 'idAcceso';
 
 const USER_ID = 'pk';
@@ -39,25 +39,25 @@ export class AuthenticationService {
   ) {
   }
 
-  saveCryptoToken(token: string): void {
+  /*saveCryptoToken(token: string): void {
     sessionStorage.setItem(CRYPTO_TOKEN, token);
   }
 
   getCryptoToken(): string {
     return <string>sessionStorage.getItem(CRYPTO_TOKEN);
-  }
+  }*/
 
   removeCryptoToken(): void {
     sessionStorage.removeItem(CRYPTO_TOKEN);
   }
 
-  saveAccessId(accessId: string): void {
+  /*saveAccessId(accessId: string): void {
     sessionStorage.setItem(ACCESS_ID, accessId);
   }
 
   getAccessId() {
     return <string>sessionStorage.getItem(ACCESS_ID);
-  }
+  }*/
 
   removeAccessId(): void {
     sessionStorage.removeItem(ACCESS_ID);
@@ -67,9 +67,9 @@ export class AuthenticationService {
     sessionStorage.setItem(USER_ID, userId);
   }
 
-  getUserId() {
+  /*getUserId() {
     return <string>sessionStorage.getItem(USER_ID);
-  }
+  }*/
 
   removeUserId(): void {
     sessionStorage.removeItem(USER_ID);
@@ -91,9 +91,9 @@ export class AuthenticationService {
     localStorage.setItem(USER_NAME, email);
   }
 
-  getUsername(): string {
+  /*getUsername(): string {
     return <string>localStorage.getItem(USER_NAME);
-  }
+  }*/
 
   removeUsername(): void {
     localStorage.removeItem(USER_NAME);
@@ -103,7 +103,7 @@ export class AuthenticationService {
     localStorage.setItem(USER_ROLE, userRole);
   }
 
-  getUserRole(): string {
+  /*getUserRole(): string {
     const userRole = <string>localStorage.getItem(USER_ROLE);
     let u = '';
     if (userRole) {
@@ -112,11 +112,11 @@ export class AuthenticationService {
         .join('');
     }
     return u;
-  }
+  }*/
 
-  getSesionRole(): string {
+  /*getSesionRole(): string {
     return <string>localStorage.getItem(USER_ROLE);
-  }
+  }*/
 
   removeUserRole(): void {
     localStorage.removeItem(USER_ROLE);
@@ -155,7 +155,7 @@ export class AuthenticationService {
     this.removeSecurityKeys();
     this.removeCryptoToken();
     this.removeAccessId();
-    await this.router.navigateByUrl('/landing');
+    await this.router.navigateByUrl('/login');
   }
 
   tokenAdd(body: TokenRequest): Promise<TokenAddResponse> {

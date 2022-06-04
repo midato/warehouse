@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
+import { Proveedor, SupplierListResponse } from '../../interfaces/supplier-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
-import { RankingRemoveRequest } from '../../../anonymous/interfaces/ranking-remove-request.interface';
-import { RankingAddRequest } from '../../interfaces/ranking-add-request.interface';
-import { RankingEditRequest } from '../../interfaces/ranking-edit-request.interface';
+import { SupplierRemoveRequest } from '../../interfaces/supplier-remove-request.interface';
+import { SupplierAddRequest } from '../../interfaces/supplier-add-request.interface';
+import { SupplierEditRequest } from '../../interfaces/supplier-edit-request.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../anonymous/services/authentication.service';
@@ -12,24 +12,23 @@ import { ProtectedService } from '../../services/protected.service';
 import { Alerts } from '../../../shared/utils';
 
 @Component({
-  selector: 'app-rankings',
-  templateUrl: './rankings.component.html',
-  styleUrls: [ './rankings.component.scss' ]
+  selector: 'app-suppliers',
+  templateUrl: './suppliers.component.html',
+  styleUrls: [ './suppliers.component.scss' ]
 })
-export class RankingsComponent implements OnInit {
+export class SuppliersComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
-  // @ViewChild('rankingModal') rankingModal;
 
-  rankingForm: FormGroup;
-  ranking: Clasificacion;
+  supplierForm: FormGroup;
+  supplier: Proveedor;
   tokenRequest: TokenRequest = {} as TokenRequest;
-  tokenRemoveRequest: RankingRemoveRequest = {} as RankingRemoveRequest;
-  rankingAddRequest: RankingAddRequest = {} as RankingAddRequest;
-  rankingEditRequest: RankingEditRequest = {} as RankingEditRequest;
+  tokenRemoveRequest: SupplierRemoveRequest = {} as SupplierRemoveRequest;
+  supplierAddRequest: SupplierAddRequest = {} as SupplierAddRequest;
+  supplierEditRequest: SupplierEditRequest = {} as SupplierEditRequest;
 
   loading: false;
-  rankings: any;
+  suppliers: any;
   userId: string;
   action: string;
   modal: any;
@@ -45,16 +44,10 @@ export class RankingsComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show('gral');
-
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
-    /*this.rankingForm = this.fb.group({
-      clasificacion: [ '', [ Validators.required ] ],
-      status: [ false, Validators.required ]
-    });*/
-
     setTimeout(async () => {
-      await this.retrieveRankings();
+      await this.retrieveSuppliers();
       await this.spinner.hide('gral');
     }, 100);
   }
@@ -69,41 +62,41 @@ export class RankingsComponent implements OnInit {
 
   resetForm() {
     this.action = 'new';
-    this.rankingForm = this.fb.group({
-      clasificacion: [ '', [ Validators.required ] ],
-      status: [ false, Validators.required ]
+    this.supplierForm = this.fb.group({
+      nombre: [ '', [ Validators.required ] ],
+      estatus: [ false, Validators.required ]
     });
   }
 
-  resetRanking() {
-    const oRanking = {
-      clasificacion: sessionStorage.getItem('clasificacion'),
-      status: sessionStorage.getItem('status')
+  resetSupplier() {
+    const oSupplier = {
+      nombre: sessionStorage.getItem('nombre'),
+      estatus: sessionStorage.getItem('estatus')
     };
-    return oRanking;
+    return oSupplier;
   }
 
-  async retrieveRankings() {
-    const allRankingsRequest = {
+  async retrieveSuppliers() {
+    const allSuppliersRequest = {
       json: {
         user_id: +this.userId,
-        id_clasificacion: 0
+        id_prov: 0
       }
     };
-    const response: RankingListResponse = await this.protectedService.retrieveRanking(allRankingsRequest);
+    const response: SupplierListResponse = await this.protectedService.retrieveSupplier(allSuppliersRequest);
     console.log(response);
-    this.rankings = response.clasificaciones;
+    this.suppliers = response.proveedores;
   }
 
-  get formRankingReference() {
-    return this.rankingForm.controls;
+  get formSupplierReference() {
+    return this.supplierForm.controls;
   }
 
   async onSave() {
     console.log(this.action);
     await this.spinner.show('sp');
-    if (this.rankingForm.invalid) {
-      return Object.values(this.rankingForm.controls).forEach((control) => {
+    if (this.supplierForm.invalid) {
+      return Object.values(this.supplierForm.controls).forEach((control) => {
         if (control instanceof FormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
@@ -129,49 +122,49 @@ export class RankingsComponent implements OnInit {
       switch (this.action) {
         case 'new':
           tokenResponse = await this.authenticationService.tokenAdd(this.tokenRequest);
-          this.rankingAddRequest = {
+          this.supplierAddRequest = {
             json: {
               user_data: {
                 id_user: +this.userId,
                 user_active: 1
               },
               add_data: {
-                clasificacion: this.rankingForm.value.clasificacion,
-                status: this.rankingForm.value.status ? 1 : 0
+                nombre: this.supplierForm.value.nombre,
+                estatus: this.supplierForm.value.estatus ? 1 : 0
               },
               add_token: tokenResponse.add_token
             }
           };
-          response = await this.protectedService.saveRanking(this.rankingAddRequest);
+          response = await this.protectedService.saveSupplier(this.supplierAddRequest);
           break;
 
         case 'edit':
           tokenResponse = await this.authenticationService.tokenEdit(this.tokenRequest);
-          this.rankingEditRequest = {
+          this.supplierEditRequest = {
             json: {
               user_data: {
                 id_user: +this.userId,
                 user_active: 1
               },
               edit_data: {
-                id_clasif: +this.ranking.id_clasif,
-                clasificacion: this.rankingForm.value.clasificacion,
-                status: this.rankingForm.value.status ? 1 : 0
+                id_prov: +this.supplier.id_prov,
+                nombre: this.supplierForm.value.nombre,
+                estatus: this.supplierForm.value.estatus ? 1 : 0
               },
               edit_token: tokenResponse.edit_token
             }
           };
-          response = await this.protectedService.editRanking(this.rankingEditRequest);
+          response = await this.protectedService.editSupplier(this.supplierEditRequest);
           break;
 
         default:
           console.log('default...');
           break;
       }
-      await this.retrieveRankings();
-      this.rankingForm.reset(this.resetRanking());
+      await this.retrieveSuppliers();
+      this.supplierForm.reset(this.resetSupplier());
       await this.spinner.hide('sp');
-      await this.router.navigateByUrl('protected/rankings');
+      await this.router.navigateByUrl('protected/suppliers');
     } catch (e) {
       console.log(e);
       await this.spinner.hide('sp');
@@ -180,24 +173,24 @@ export class RankingsComponent implements OnInit {
     }
   }
 
-  loadRankingForm(ranking: Clasificacion) {
-    this.rankingForm.reset({
-      clasificacion: ranking.clasificacion,
-      status: +ranking.status === 1
+  loadSupplierForm(supplier: Proveedor) {
+    this.supplierForm.reset({
+      nombre: supplier.nombre,
+      estatus: +supplier.estatus === 1
     });
   }
 
-  editRanking(ranking: Clasificacion) {
-    this.ranking = ranking;
+  editSupplier(supplier: Proveedor) {
+    this.supplier = supplier;
     this.setAction('edit');
-    this.loadRankingForm(ranking);
+    this.loadSupplierForm(supplier);
   }
 
-  selectRanking(ranking: Clasificacion) {
-    this.ranking = ranking;
+  selectSupplier(supplier: Proveedor) {
+    this.supplier = supplier;
   }
 
-  async removeRanking() {
+  async removeSupplier() {
     try {
       await this.spinner.show('sr');
       this.tokenRequest = {
@@ -216,15 +209,15 @@ export class RankingsComponent implements OnInit {
             user_active: 1
           },
           del_data: {
-            id_clasif: +this.ranking.id_clasif
+            id_prov: +this.supplier.id_prov
           },
           del_token: tokenResponse.del_token
         }
       };
-      const response = await this.protectedService.removeRanking(this.tokenRemoveRequest);
+      const response = await this.protectedService.removeSupplier(this.tokenRemoveRequest);
       console.log(response);
-      await this.retrieveRankings();
-      this.rankingForm.reset(this.resetRanking());
+      await this.retrieveSuppliers();
+      this.supplierForm.reset(this.resetSupplier());
       await this.spinner.hide('sr');
       this.closeModal();
     } catch (e) {

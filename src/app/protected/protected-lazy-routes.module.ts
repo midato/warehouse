@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { RankingsComponent } from './components/rankings/rankings.component';
-import { ProvidersComponent } from './components/providers/providers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { StocksComponent } from './components/stocks/stocks.component';
 import { UsersComponent } from './components/users/users.component';
 import { AuthenticationGuard } from '../anonymous/guards/authentication.guard';
+import { SuppliersComponent } from './components/suppliers/suppliers.component';
 
 const lazyProtectedRoutes: Routes = [
   {
@@ -22,8 +22,8 @@ const lazyProtectedRoutes: Routes = [
     data: {optionMenuLabel: 'Clasificaciones', optionBanner: true, breadcrumbs: true}
   },
   {
-    path: 'providers',
-    component: ProvidersComponent,
+    path: 'suppliers',
+    component: SuppliersComponent,
     canActivate: [ AuthenticationGuard ],
     data: {optionMenuLabel: 'Proveedores', optionBanner: true, breadcrumbs: true}
   },

@@ -9,6 +9,13 @@ import { StockListResponse } from '../interfaces/stock-list-response.interface';
 import { StockEditRequest } from '../interfaces/stock-edit-request.interface';
 import { StockEditResponse } from '../interfaces/stock-edit-response.interface';
 import { StockRemoveRequest } from '../interfaces/stock-remove-request.interface';
+import { RankingAddRequest } from '../interfaces/ranking-add-request.interface';
+import { RankingAddResponse } from '../interfaces/rancking-add-response.interface';
+import { RankingListResponse } from '../interfaces/ranking-list-response.interface';
+import { RankingEditRequest } from '../interfaces/ranking-edit-request.interface';
+import { RankingEditResponse } from '../interfaces/ranking-edit-response.interface';
+import { RankingRemoveRequest } from '../interfaces/ranking-remove-request.interface';
+import { RankingRemoveResponse } from '../interfaces/ranking-remove-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -46,9 +53,30 @@ export class ProtectedService {
     return this.http.post<StockEditResponse>(baseUrl, body).toPromise();
   }
 
-  removeStock(body: StockRemoveRequest): Promise<StockEditResponse> {
+  removeStock(body: StockRemoveRequest): Promise<StockRemoveRequest> {
     const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_almacenes/borrar_almacen`;
-    return this.http.post<StockEditResponse>(baseUrl, body).toPromise();
+    return this.http.post<StockRemoveRequest>(baseUrl, body).toPromise();
+  }
+
+  retrieveRanking(body: any): Promise<RankingListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/get_clasificaciones/`;
+    return this.http.post<RankingListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveRanking(body: RankingAddRequest): Promise<RankingAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/agregar_clasificacion`;
+    return this.http.post<RankingAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editRanking(body: RankingEditRequest): Promise<RankingEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/editar_clasificacion`;
+    return this.http.post<RankingEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeRanking(body: RankingRemoveRequest): Promise<RankingRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/borrar_clasificacion`;
+    return this.http.post<RankingRemoveResponse>(baseUrl, body).toPromise();
   }
 
 }

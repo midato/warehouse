@@ -74,6 +74,7 @@ export class StocksComponent implements OnInit {
   }
 
   resetForm() {
+    this.action = 'new';
     this.stockForm = this.fb.group({
       nombre: [ '', [ Validators.required ] ],
       descripcion: [ '', Validators.required ],

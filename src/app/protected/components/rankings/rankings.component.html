@@ -1,169 +1,169 @@
 <div
   class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Clasificaciones</h1>
+</div>
+<div id="container" class="container">
   <div id="add"
-       class="btn bg-primary rounded-circle d-flex"
-       style="width: 35px;"
+       class="bg-primary rounded-circle d-flex"
        data-bs-toggle="modal"
-       data-bs-target="#addModal">
+       data-bs-target="#rankingModal"
+       (click)="resetForm()"
+  >
     <span class="text-center">+</span>
   </div>
-</div>
 
-<div id="container" class="container">
-
-  <div class="container d-flex flex-wrap align-items-center">
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Fruta</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
+  <div *ngFor="let ranking of rankings; index as i; first as isFirst"
+       class="cardClasif"
+       style="max-width: 230px;">
+    <div class="card-header d-flex justify-content-end">
+      <a data-bs-toggle="modal"
+         data-bs-target="#rankingModal"
+         (click)="editRanking(ranking)">
+        <i class="fa-solid fa-pen me-3"></i>
+      </a>
+      <a data-bs-toggle="modal"
+         data-bs-target="#rankingRemoveModal"
+         (click)="selectRanking(ranking)">
+        <i class="fa-regular fa-trash-can text-danger"></i>
+      </a>
     </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Verdura</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ranking.clasificacion}}</h5>
+      <!--<a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#rankingModal"
+         (click)="editRanking(ranking)"
+      >
+        Editar
+      </a>
+      <a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#rankingRemoveModal"
+         (click)="selectRanking(ranking)"
+      >
+        Borrar
+      </a>-->
     </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Abarrote</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Condimento</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Marisco</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Pollo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Cerdo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-    <div class="m-2 card">
-      <div class="card-body">
-        <h5 class="card-title">Res</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-    <div class="m-2 card">9</div>
-    <div class="m-2 card">10</div>
-    <div class="m-2 card">11</div>
-    <div class="m-2 card">12</div>
-    <div class="m-2 card">13</div>
-    <div class="m-2 card">14</div>
-    <div class="m-2 card">15</div>
-    <div class="m-2 card">16</div>
-    <div class="m-2 card">17</div>
-    <div class="m-2 card">18</div>
-    <div class="m-2 card">19</div>
-    <div class="m-2 card">20</div>
-  </div>
-
-  <div style="display: flex;">
-
-    <!--<div class="card cardClasif" style="display: flex; min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Fruta</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="display: flex; min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Verdura</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Abarrote</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Condimento</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Marisco</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Pollo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Cerdo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="card cardClasif" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Res</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>-->
   </div>
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- New/Edit Ranking Modal -->
+<div class="modal fade"
+     id="rankingModal"
+     tabindex="-1"
+     aria-labelledby="rankingModalLabel"
+     aria-hidden="true">
+  <form
+    id="rankingEForm"
+    autocomplete="off"
+    [formGroup]="rankingForm"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="rankingModalLabel">Nueva clasificación</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+          >
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text" id="basic-addon2">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Nombre de clasificación"
+                   aria-label="clasificacion"
+                   aria-describedby="basic-addon1"
+                   id="clasificacion"
+                   name="clasificacion"
+                   formControlName="clasificacion"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formRankingReference.clasificacion.touched && formRankingReference.clasificacion.errors?.required">
+            * La clasificación es obligatorio
+          </div>
+          <div class="input-group mt-3 mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="status"
+                name="status"
+                formControlName="status"
+              />
+              <label for="status" class="form-check-label">
+                Estatus
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-spinner layerName="sp" [fullScreen]=false></app-spinner>
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  [disabled]="rankingForm.invalid"
+                  (click)="onSave()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Remove User Modal -->
+<div class="modal fade"
+     id="rankingRemoveModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="rankingRemoveModalLabel"
+     aria-hidden="true"
+     [ngStyle]="{'modal':modal}"
+>
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Agregar Clasificacion</h5>
+        <h5 class="modal-title" id="rankingRemoveModalLabel">Borrar usuario</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>-->
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">@</span>
-          <input type="text" class="form-control" placeholder="Clasificacion" aria-label="Username"
-                 aria-describedby="basic-addon1">
-        </div>
-
-        <div class="input-group mb-3">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-              Estatus
-            </label>
-          </div>
-        </div>
+        <h5>¿Estás seguro?</h5>
+        <div class="text-center">Se borrará <b>{{ranking?.clasificacion}}</b></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+        <app-spinner layerName="sr" [fullScreen]=false></app-spinner>
+        <button #closeButton
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+          No
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="removeRanking()"
+        >
+          Si
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<app-spinner layerName="gral" [fullScreen]=false></app-spinner>

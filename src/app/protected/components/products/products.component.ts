@@ -35,7 +35,7 @@ export class ProductsComponent implements OnInit {
 
   loading: false;
   products: any;
-  suppliers:  Proveedor[];
+  suppliers: Proveedor[];
   rankings: Clasificacion[];
   userId: string;
   action: string;
@@ -237,7 +237,6 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProductForm(product: Producto) {
-    console.log(product);
     this.productForm.reset({
       producto: product.producto,
       id_prov: product.id_prov,

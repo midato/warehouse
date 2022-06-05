@@ -110,4 +110,27 @@ export class ProtectedService {
     return this.http.post<SupplierRemoveResponse>(baseUrl, body).toPromise();
   }
 
+  // USERS
+  /*retrieveUser(body: any): Promise<UserListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/get_usuarios/`;
+    return this.http.post<UserListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveUser(body: UserAddRequest): Promise<UserAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/agregar_usuario`;
+    return this.http.post<UserAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editUser(body: UserEditRequest): Promise<UserEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/editar_usuario`;
+    return this.http.post<UserEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeUser(body: UserRemoveRequest): Promise<UserRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/borrar_usuario`;
+    return this.http.post<UserRemoveResponse>(baseUrl, body).toPromise();
+  }*/
+
+
 }

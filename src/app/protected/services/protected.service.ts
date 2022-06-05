@@ -30,6 +30,13 @@ import { CustomerEditRequest } from '../interfaces/customer-edit-request.interfa
 import { CustomerEditResponse } from '../interfaces/customer-edit-response.interface';
 import { CustomerRemoveRequest } from '../interfaces/customer-remove-request.interface';
 import { CustomerRemoveResponse } from '../interfaces/customer-remove-response.interface';
+import { ProductListResponse } from '../interfaces/product-list-response.interface';
+import { ProductAddRequest } from '../interfaces/product-add-request.interface';
+import { ProductAddResponse } from '../interfaces/product-add-response.interface';
+import { ProductEditRequest } from '../interfaces/product-edit-request.interface';
+import { ProductEditResponse } from '../interfaces/product-edit-response.interface';
+import { ProductRemoveRequest } from '../interfaces/product-remove-request.interface';
+import { ProductRemoveResponse } from '../interfaces/product-remove-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -137,6 +144,28 @@ export class ProtectedService {
   removeCustomer(body: CustomerRemoveRequest): Promise<CustomerRemoveResponse> {
     const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clientes/borrar_cliente`;
     return this.http.post<CustomerRemoveResponse>(baseUrl, body).toPromise();
+  }
+
+  // PRODUCTS
+  retrieveProduct(body: any): Promise<ProductListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_productos/get_productos/`;
+    return this.http.post<ProductListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveProduct(body: ProductAddRequest): Promise<ProductAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_productos/agregar_producto`;
+    return this.http.post<ProductAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editProduct(body: ProductEditRequest): Promise<ProductEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_productos/editar_producto`;
+    return this.http.post<ProductEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeProduct(body: ProductRemoveRequest): Promise<ProductRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_productos/borrar_producto`;
+    return this.http.post<ProductRemoveResponse>(baseUrl, body).toPromise();
   }
 
   // USERS

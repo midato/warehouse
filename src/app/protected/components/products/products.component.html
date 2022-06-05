@@ -1,358 +1,278 @@
 <div
   class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Productos</h1>
+</div>
+<div id="container" class="container">
   <div id="add"
-       class="btn bg-primary rounded-circle d-flex"
-       style="width: 35px;"
+       class="bg-primary rounded-circle d-flex"
        data-bs-toggle="modal"
-       data-bs-target="#addModal">
+       data-bs-target="#productModal"
+       (click)="resetForm()"
+  >
     <span class="text-center">+</span>
   </div>
-</div>
 
-<div id="container" class="container">
-
-  <div class="container d-flex flex-wrap align-items-center">
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Cebolla Blanca</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
+  <div *ngFor="let product of products; index as i; first as isFirst"
+       class="cardClasif"
+       style="max-width: 230px;">
+    <div class="card-header d-flex justify-content-end">
+      <a data-bs-toggle="modal"
+         data-bs-target="#productModal"
+         (click)="editProduct(product)">
+        <i class="fa-solid fa-pen me-3"></i>
+      </a>
+      <a data-bs-toggle="modal"
+         data-bs-target="#productRemoveModal"
+         (click)="selectProduct(product)">
+        <i class="fa-regular fa-trash-can text-danger"></i>
+      </a>
     </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Cebolla Morada</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
+    <div class="card-body">
+      <h5 class="card-title">{{product.producto}}</h5>
     </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Jitomate Saladet</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Chile serrano</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Pimiento morrón</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Papa Blanca</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="max-width: 230px;">
-
-      <div class="card-body">
-        <h5 class="card-title">Nopal</h5>
-        <div class="d-flex align-items-center">
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MIN</p>
-            <input type="text" class="form-control" placeholder="5,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-          <div style="display: block; margin-left: 1px; margin-right: 1px;">
-            <p class="text-center" id="basic-addon1">MAX</p>
-            <input type="text" class="form-control" placeholder="12,000.00" aria-label="min"
-                   aria-describedby="basic-addon1">
-          </div>
-
-        </div>
-
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Ver
-          Detalles</a>
-      </div>
-    </div>
-    <div class="m-2 card">9</div>
-    <div class="m-2 card">10</div>
-    <div class="m-2 card">11</div>
-    <div class="m-2 card">12</div>
-    <div class="m-2 card">13</div>
-    <div class="m-2 card">14</div>
-    <div class="m-2 card">15</div>
-    <div class="m-2 card">16</div>
-    <div class="m-2 card">17</div>
-    <div class="m-2 card">18</div>
-    <div class="m-2 card">19</div>
-    <div class="m-2 card">20</div>
-  </div>
-
-  <div style="display: flex;">
-
-    <!--<div class="m-2 card" style="display: flex; min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Fruta</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="display: flex; min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Verdura</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Abarrote</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Condimento</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Marisco</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Pollo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Cerdo</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>
-
-    <div class="m-2 card" style="min-width: 200px;">
-      <div class="card-body">
-        <h5 class="card-title">Res</h5>
-        <a href="#" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#addModal">Editar</a>
-      </div>
-    </div>-->
   </div>
 
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-xl">
+<!-- New/Edit Prdduct Modal -->
+<div class="modal fade"
+     id="productModal"
+     tabindex="-1"
+     aria-labelledby="productModalLabel"
+     aria-hidden="true">
+  <form
+    id="productEForm"
+    autocomplete="off"
+    [formGroup]="productForm"
+  >
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">Nuevo producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Nombre de producto"
+                       aria-label="producto"
+                       aria-describedby="basic-addon1"
+                       id="producto"
+                       name="producto"
+                       formControlName="producto"
+                >
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.producto.touched && formProductReference.producto.errors?.required">
+                * El producto es obligatorio
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="supplier">Proveedor</label>
+                <select class="form-select"
+                        id="supplier"
+                        name="supplier"
+                        formControlName="id_prov"
+                >
+                  <option [ngValue]="null">Elegir...</option>
+                  <option *ngFor="let supplier of suppliers"
+                          [ngValue]="supplier.id_prov">{{supplier.nombre}}</option>
+                </select>
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.id_prov.touched && formProductReference.id_prov.errors?.required">
+                * El proveedor es obligatorio
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="supplier">Clasificacion</label>
+                <select class="form-select"
+                        id="ranking"
+                        name="ranking"
+                        formControlName="id_clasif"
+                >
+                  <option [ngValue]="null">Elegir...</option>
+                  <option *ngFor="let ranking of rankings"
+                          [ngValue]="ranking.id_clasif">{{ranking.clasificacion}}</option>
+                </select>
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.id_clasif.touched && formProductReference.id_clasif.errors?.required">
+                * La clasificación es obligatoria
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Mínimo"
+                       aria-label="min"
+                       aria-describedby="min"
+                       id="min"
+                       name="min"
+                       formControlName="min"
+                >
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.min.touched && formProductReference.min.errors?.required">
+                * La cantidad mínima es obligatoria
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Máxima"
+                       aria-label="max"
+                       aria-describedby="max"
+                       id="max"
+                       name="max"
+                       formControlName="max"
+                >
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.max.touched && formProductReference.max.errors?.required">
+                * La cantidad máxima es obligatoria
+              </div>
+            </div>
+            <div class="col">
+              <div class="col">
+                <div class="input-group mb-3">
+                  <span class="input-group-text">@</span>
+                  <input type="text"
+                         class="form-control"
+                         placeholder="Existencias"
+                         aria-label="existencias"
+                         aria-describedby="existencias"
+                         id="existencias"
+                         name="existencias"
+                         formControlName="existencias"
+                  >
+                </div>
+                <div class="text-danger mb-3"
+                     *ngIf="formProductReference.existencias.touched && formProductReference.existencias.errors?.required">
+                  * La existencia es obligatoria
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Presentación"
+                       aria-label="presentacion"
+                       aria-describedby="presentacion"
+                       id="presentacion"
+                       name="presentacion"
+                       formControlName="presentacion"
+                >
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.presentacion.touched && formProductReference.presentacion.errors?.required">
+                * La presentación es obligatoria
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">@</span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Unidad"
+                       aria-label="unidad"
+                       aria-describedby="unidad"
+                       id="unidad"
+                       name="unidad"
+                       formControlName="unidad"
+                >
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.unidad.touched && formProductReference.unidad.errors?.required">
+                * La unidad es obligatoria
+              </div>
+            </div>
+            <div class="col">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="estatus"
+                name="estatus"
+                formControlName="estatus"
+              />
+              <label for="estatus" class="form-check-label">
+                Estatus
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button"
+                  class="btn btn-primary"
+                  [disabled]="productForm.invalid"
+                  (click)="onSave()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Remove Product Modal -->
+<div class="modal fade"
+     id="productRemoveModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="productRemoveModalLabel"
+     aria-hidden="true"
+     [ngStyle]="{'modal':modal}"
+>
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="productRemoveModalLabel">Borrar usuario</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>-->
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="row">
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Producto" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupSelect01">Proveedor</label>
-              <select class="form-select" id="inputGroupSelect01">
-                <option selected>Elegir...</option>
-                <option value="1">Tortilleria La Cruz</option>
-                <option value="2">Mariscos Hermita</option>
-                <option value="3">Abarrotes gozalez</option>
-              </select>
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <label class="input-group-text" for="inputGroupSelect02">Clasificacion</label>
-              <select class="form-select" id="inputGroupSelect02">
-                <option selected>Elegir...</option>
-                <option value="1">Fruta</option>
-                <option value="2">Verdura</option>
-                <option value="3">Abarrotes</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Mínimo" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Máximo" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Existencias" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Presentacion" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Unidad" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-          <div class="col">
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="basic-addon1">@</span>
-              <input type="text" class="form-control" placeholder="Estatus" aria-label="Username"
-                     aria-describedby="basic-addon1">
-            </div>
-          </div>
-        </div>
+        <h5>¿Estás seguro?</h5>
+        <div class="text-center">Se borrará <b>{{product?.producto}}</b></div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary">Guardar Cambios</button>
+        <app-spinner layerName="sr" [fullScreen]=false></app-spinner>
+        <button #closeButton
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+          No
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="removeProduct()"
+        >
+          Si
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<app-spinner layerName="gral" [fullScreen]=false></app-spinner>

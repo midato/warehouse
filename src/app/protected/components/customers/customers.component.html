@@ -62,7 +62,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="customerModalLabel">Nueva Proveedor</h5>
+          <h5 class="modal-title" id="customerModalLabel">Nuevo Cliente</h5>
           <button type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
@@ -75,7 +75,7 @@
             <span class="input-group-text" id="basic-addon2">@</span>
             <input type="text"
                    class="form-control"
-                   placeholder="Nombre de Proveedor"
+                   placeholder="Nombre de Cliente"
                    aria-label="nombre"
                    aria-describedby="basic-addon1"
                    id="nombre"
@@ -85,7 +85,7 @@
           </div>
           <div class="text-danger mb-3"
                *ngIf="formCustomerReference.nombre.touched && formCustomerReference.nombre.errors?.required">
-            * EL Proveedor es obligatorio
+            * EL Cliente es obligatorio
           </div>
           <div class="input-group mt-3 mb-3">
             <div class="form-check">

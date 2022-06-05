@@ -14,6 +14,7 @@ import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { StocksComponent } from './components/stocks/stocks.component';
 import { UsersComponent } from './components/users/users.component';
+import { CustomersComponent } from './components/customers/customers.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { UsersComponent } from './components/users/users.component';
     SuppliersComponent,
     ProductsComponent,
     StocksComponent,
-    UsersComponent
+    UsersComponent,
+    CustomersComponent
   ],
   imports: [
     CommonModule,

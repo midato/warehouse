@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
+import { UsersComponent } from './components/users/users.component';
 import { RankingsComponent } from './components/rankings/rankings.component';
+import { CustomersComponent } from './components/customers/customers.component';
+import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { ProductsComponent } from './components/products/products.component';
 import { StocksComponent } from './components/stocks/stocks.component';
-import { UsersComponent } from './components/users/users.component';
 import { AuthenticationGuard } from '../anonymous/guards/authentication.guard';
-import { SuppliersComponent } from './components/suppliers/suppliers.component';
 
 const lazyProtectedRoutes: Routes = [
   {
@@ -16,10 +17,22 @@ const lazyProtectedRoutes: Routes = [
     data: {optionMenuLabel: 'Inicio', optionBanner: true, breadcrumbs: false}
   },
   {
+    path: 'users',
+    component: UsersComponent,
+    canActivate: [ AuthenticationGuard ],
+    data: {optionMenuLabel: 'Usuarios', optionBanner: true, breadcrumbs: true}
+  },
+  {
     path: 'rankings',
     component: RankingsComponent,
     canActivate: [ AuthenticationGuard ],
     data: {optionMenuLabel: 'Clasificaciones', optionBanner: true, breadcrumbs: true}
+  },
+  {
+    path: 'customers',
+    component: CustomersComponent,
+    canActivate: [ AuthenticationGuard ],
+    data: {optionMenuLabel: 'Clientes', optionBanner: true, breadcrumbs: true}
   },
   {
     path: 'suppliers',
@@ -28,22 +41,16 @@ const lazyProtectedRoutes: Routes = [
     data: {optionMenuLabel: 'Proveedores', optionBanner: true, breadcrumbs: true}
   },
   {
-    path: 'products',
-    component: ProductsComponent,
-    canActivate: [ AuthenticationGuard ],
-    data: {optionMenuLabel: 'Productos', optionBanner: true, breadcrumbs: true}
-  },
-  {
     path: 'stocks',
     component: StocksComponent,
     canActivate: [ AuthenticationGuard ],
     data: {optionMenuLabel: 'Almacénes', optionBanner: true, breadcrumbs: true}
   },
   {
-    path: 'users',
-    component: UsersComponent,
+    path: 'products',
+    component: ProductsComponent,
     canActivate: [ AuthenticationGuard ],
-    data: {optionMenuLabel: 'Usuarios', optionBanner: true, breadcrumbs: true}
+    data: {optionMenuLabel: 'Productos', optionBanner: true, breadcrumbs: true}
   },
 
   {path: '', redirectTo: 'protected', pathMatch: 'full'}

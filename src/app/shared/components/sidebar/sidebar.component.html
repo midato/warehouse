@@ -235,11 +235,27 @@
       </li>
       <li class="nav-item">
         <a class="nav-link"
+           routerLinkActive="active"
+           [routerLink]="['/protected/users']">
+          <span data-feather="users" class="align-text-bottom"></span>
+          Usuarios
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
            aria-current="page"
            routerLinkActive="active"
            [routerLink]="['/protected/rankings']">
           <span data-feather="home" class="align-text-bottom"></span>
           Clasificaciones
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"
+           routerLinkActive="active"
+           [routerLink]="['/protected/customers']">
+          <span data-feather="file" class="align-text-bottom"></span>
+          Clientes
         </a>
       </li>
       <li class="nav-item">
@@ -253,14 +269,6 @@
       <li class="nav-item">
         <a class="nav-link"
            routerLinkActive="active"
-           [routerLink]="['/protected/products']">
-          <span data-feather="shopping-cart" class="align-text-bottom"></span>
-          Productos
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link"
-           routerLinkActive="active"
            [routerLink]="['/protected/stocks']">
           <span data-feather="shopping-cart" class="align-text-bottom"></span>
           Almacenes
@@ -269,9 +277,9 @@
       <li class="nav-item">
         <a class="nav-link"
            routerLinkActive="active"
-           [routerLink]="['/protected/users']">
-          <span data-feather="users" class="align-text-bottom"></span>
-          Usuarios
+           [routerLink]="['/protected/products']">
+          <span data-feather="shopping-cart" class="align-text-bottom"></span>
+          Productos
         </a>
       </li>
     </ul>

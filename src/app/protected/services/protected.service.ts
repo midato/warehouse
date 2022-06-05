@@ -23,6 +23,13 @@ import { SupplierEditRequest } from '../interfaces/supplier-edit-request.interfa
 import { SupplierEditResponse } from '../interfaces/supplier-edit-response.interface';
 import { SupplierRemoveRequest } from '../interfaces/supplier-remove-request.interface';
 import { SupplierRemoveResponse } from '../interfaces/supplier-remove-response.interface';
+import { CustomerListResponse } from '../interfaces/customer-list-response.interface';
+import { CustomerAddRequest } from '../interfaces/customer-add-request.interface';
+import { CustomerAddResponse } from '../interfaces/customer-add-response.interface';
+import { CustomerEditRequest } from '../interfaces/customer-edit-request.interface';
+import { CustomerEditResponse } from '../interfaces/customer-edit-response.interface';
+import { CustomerRemoveRequest } from '../interfaces/customer-remove-request.interface';
+import { CustomerRemoveResponse } from '../interfaces/customer-remove-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +37,7 @@ import { SupplierRemoveResponse } from '../interfaces/supplier-remove-response.i
 export class ProtectedService {
 
   NG_APP_EWH_BASE_URL = environment.NG_APP_EWH_BASE_URL;
-  NG_APP_EWH_PREFIX = environment.NG_APP_EWH_PREFIX;
+  NG_APP_EWH_VERSION = environment.NG_APP_EWH_VERSION;
 
   redirectUrl = '';
 
@@ -41,7 +48,7 @@ export class ProtectedService {
 
   // STOCKS
   retrieveStock(body: any): Promise<StockListResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_almacenes/get_almacenes/`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_almacenes/get_almacenes/`;
     // const headers = new HttpHeaders()
     // .set('Access-Control-Allow-Headers', 'true');
     // .set('x-id-acceso', `${ this.getAccessId() }`)
@@ -52,83 +59,105 @@ export class ProtectedService {
   }
 
   saveStock(body: StockAddRequest): Promise<StockAddResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_almacenes/agregar_almacen`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_almacenes/agregar_almacen`;
     return this.http.post<StockAddResponse>(baseUrl, body).toPromise();
   }
 
   editStock(body: StockEditRequest): Promise<StockEditResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_almacenes/editar_almacen`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_almacenes/editar_almacen`;
     return this.http.post<StockEditResponse>(baseUrl, body).toPromise();
   }
 
   removeStock(body: StockRemoveRequest): Promise<StockRemoveRequest> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_almacenes/borrar_almacen`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_almacenes/borrar_almacen`;
     return this.http.post<StockRemoveRequest>(baseUrl, body).toPromise();
   }
 
   // RANKINGS
   retrieveRanking(body: any): Promise<RankingListResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/get_clasificaciones/`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clasificaciones/get_clasificaciones/`;
     return this.http.post<RankingListResponse>(baseUrl, body).toPromise();
   }
 
   saveRanking(body: RankingAddRequest): Promise<RankingAddResponse> {
     console.log(body);
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/agregar_clasificacion`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clasificaciones/agregar_clasificacion`;
     return this.http.post<RankingAddResponse>(baseUrl, body).toPromise();
   }
 
   editRanking(body: RankingEditRequest): Promise<RankingEditResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/editar_clasificacion`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clasificaciones/editar_clasificacion`;
     return this.http.post<RankingEditResponse>(baseUrl, body).toPromise();
   }
 
   removeRanking(body: RankingRemoveRequest): Promise<RankingRemoveResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_clasificaciones/borrar_clasificacion`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clasificaciones/borrar_clasificacion`;
     return this.http.post<RankingRemoveResponse>(baseUrl, body).toPromise();
   }
 
   // SUPPLIERS
   retrieveSupplier(body: any): Promise<SupplierListResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_proveedores/get_proveedores/`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_proveedores/get_proveedores/`;
     return this.http.post<SupplierListResponse>(baseUrl, body).toPromise();
   }
 
   saveSupplier(body: SupplierAddRequest): Promise<SupplierAddResponse> {
     console.log(body);
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_proveedores/agregar_proveedor`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_proveedores/agregar_proveedor`;
     return this.http.post<SupplierAddResponse>(baseUrl, body).toPromise();
   }
 
   editSupplier(body: SupplierEditRequest): Promise<SupplierEditResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_proveedores/editar_proveedor`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_proveedores/editar_proveedor`;
     return this.http.post<SupplierEditResponse>(baseUrl, body).toPromise();
   }
 
   removeSupplier(body: SupplierRemoveRequest): Promise<SupplierRemoveResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_proveedores/borrar_proveedor`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_proveedores/borrar_proveedor`;
     return this.http.post<SupplierRemoveResponse>(baseUrl, body).toPromise();
+  }
+
+  // CUSTOMERS
+  retrieveCustomer(body: any): Promise<CustomerListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clientes/get_clientes/`;
+    return this.http.post<CustomerListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveCustomer(body: CustomerAddRequest): Promise<CustomerAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clientes/agregar_cliente`;
+    return this.http.post<CustomerAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editCustomer(body: CustomerEditRequest): Promise<CustomerEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clientes/editar_cliente`;
+    return this.http.post<CustomerEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeCustomer(body: CustomerRemoveRequest): Promise<CustomerRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_clientes/borrar_cliente`;
+    return this.http.post<CustomerRemoveResponse>(baseUrl, body).toPromise();
   }
 
   // USERS
   /*retrieveUser(body: any): Promise<UserListResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/get_usuarios/`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_usuarios/get_usuarios/`;
     return this.http.post<UserListResponse>(baseUrl, body).toPromise();
   }
 
   saveUser(body: UserAddRequest): Promise<UserAddResponse> {
     console.log(body);
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/agregar_usuario`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_usuarios/agregar_usuario`;
     return this.http.post<UserAddResponse>(baseUrl, body).toPromise();
   }
 
   editUser(body: UserEditRequest): Promise<UserEditResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/editar_usuario`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_usuarios/editar_usuario`;
     return this.http.post<UserEditResponse>(baseUrl, body).toPromise();
   }
 
   removeUser(body: UserRemoveRequest): Promise<UserRemoveResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/modules/cont_usuarios/borrar_usuario`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_usuarios/borrar_usuario`;
     return this.http.post<UserRemoveResponse>(baseUrl, body).toPromise();
   }*/
 

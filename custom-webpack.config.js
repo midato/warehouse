@@ -38,7 +38,7 @@ module.exports = {
           process.env.NG_APP_EWH_BASE_URL_OAUTH_API
         ),
         NG_APP_EWH_BASE_URL: JSON.stringify(process.env.NG_APP_EWH_BASE_URL),
-        NG_APP_EWH_PREFIX: JSON.stringify(process.env.NG_APP_EWH_PREFIX),
+        NG_APP_EWH_VERSION: JSON.stringify(process.env.NG_APP_EWH_VERSION),
       },
     }),
   ],

@@ -29,7 +29,7 @@ const USER_ROLE = 'userRole';
 export class AuthenticationService {
 
   NG_APP_EWH_BASE_URL = environment.NG_APP_EWH_BASE_URL;
-  NG_APP_EWH_PREFIX = environment.NG_APP_EWH_PREFIX;
+  NG_APP_EWH_VERSION = environment.NG_APP_EWH_VERSION;
 
   redirectUrl = '';
 
@@ -143,7 +143,7 @@ export class AuthenticationService {
   }
 
   login(body: LoginRequest): Observable<LoginResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/acceso/login/login/`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/acceso/login/login/`;
     return this.http.post<LoginResponse>(baseUrl, body);
   }
 
@@ -159,7 +159,7 @@ export class AuthenticationService {
   }
 
   tokenAdd(body: TokenRequest): Promise<TokenAddResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/tokens/tokens/obtener_token_agregar`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/tokens/tokens/obtener_token_agregar`;
     const headers = new HttpHeaders()
       // .set('Access-Control-Allow-Headers', 'true');
       // .set('x-id-acceso', `${ this.getAccessId() }`)
@@ -170,14 +170,14 @@ export class AuthenticationService {
   }
 
   tokenEdit(body: TokenRequest): Promise<TokenAddResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/tokens/tokens/obtener_token_editar`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/tokens/tokens/obtener_token_editar`;
     const headers = new HttpHeaders()
       .set('x-api-key', `${this.getApikey()}`);
     return this.http.post<TokenAddResponse>(baseUrl, body, {headers}).toPromise();
   }
 
   tokenRemove(body: TokenRequest): Promise<TokenRemoveResponse> {
-    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_PREFIX}/index.php/tokens/tokens/obtener_token_borrar`;
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/tokens/tokens/obtener_token_borrar`;
     const headers = new HttpHeaders()
       .set('x-api-key', `${this.getApikey()}`);
     return this.http.post<TokenRemoveResponse>(baseUrl, body, {headers}).toPromise();

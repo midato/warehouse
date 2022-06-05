@@ -1,0 +1,169 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Clientes</h1>
+</div>
+<div id="container" class="container">
+  <div id="add"
+       class="bg-primary rounded-circle d-flex"
+       data-bs-toggle="modal"
+       data-bs-target="#customerModal"
+       (click)="resetForm()"
+  >
+    <span class="text-center">+</span>
+  </div>
+
+  <div *ngFor="let customer of customers; index as i; first as isFirst"
+       class="cardClasif"
+       style="max-width: 230px;">
+    <div class="card-header d-flex justify-content-end">
+      <a data-bs-toggle="modal"
+         data-bs-target="#customerModal"
+         (click)="editCustomer(customer)">
+        <i class="fa-solid fa-pen me-3"></i>
+      </a>
+      <a data-bs-toggle="modal"
+         data-bs-target="#customerRemoveModal"
+         (click)="selectCustomer(customer)">
+        <i class="fa-regular fa-trash-can text-danger"></i>
+      </a>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{customer.nombre}}</h5>
+      <!--<a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#customerModal"
+         (click)="editCustomer(customer)"
+      >
+        Editar
+      </a>
+      <a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#customerRemoveModal"
+         (click)="selectCustomer(customer)"
+      >
+        Borrar
+      </a>-->
+    </div>
+  </div>
+
+</div>
+
+<!-- New/Edit Customer Modal -->
+<div class="modal fade"
+     id="customerModal"
+     tabindex="-1"
+     aria-labelledby="customerModalLabel"
+     aria-hidden="true">
+  <form
+    id="customerEForm"
+    autocomplete="off"
+    [formGroup]="customerForm"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customerModalLabel">Nueva Proveedor</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+          >
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text" id="basic-addon2">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Nombre de Proveedor"
+                   aria-label="nombre"
+                   aria-describedby="basic-addon1"
+                   id="nombre"
+                   name="nombre"
+                   formControlName="nombre"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formCustomerReference.nombre.touched && formCustomerReference.nombre.errors?.required">
+            * EL Proveedor es obligatorio
+          </div>
+          <div class="input-group mt-3 mb-3">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="estatus"
+                name="estatus"
+                formControlName="estatus"
+              />
+              <label for="estatus" class="form-check-label">
+                Estatus
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-spinner layerName="sp" [fullScreen]=false></app-spinner>
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  [disabled]="customerForm.invalid"
+                  (click)="onSave()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Remove User Modal -->
+<div class="modal fade"
+     id="customerRemoveModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="customerRemoveModalLabel"
+     aria-hidden="true"
+     [ngStyle]="{'modal':modal}"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerRemoveModalLabel">Borrar usuario</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>-->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>¿Estás seguro?</h5>
+        <div class="text-center">Se borrará <b>{{customer?.nombre}}</b></div>
+      </div>
+      <div class="modal-footer">
+        <app-spinner layerName="sr" [fullScreen]=false></app-spinner>
+        <button #closeButton
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+          No
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="removeCustomer()"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-spinner layerName="gral" [fullScreen]=false></app-spinner>

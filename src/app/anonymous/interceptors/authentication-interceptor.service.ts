@@ -51,7 +51,7 @@ export class AuthenticationInterceptorService implements HttpInterceptor {
     if (!request.headers.has('Content-Type')) {
       request = request.clone({
         setHeaders: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
           // 'Access-Control-Allow-Origin': '*',
           // 'origin': '*',
           // 'Referrer-Policy':'unsafe-url'

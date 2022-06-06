@@ -90,13 +90,14 @@ export class ProductsComponent implements OnInit {
       producto: sessionStorage.getItem('producto'),
       id_prov: sessionStorage.getItem('id_prov'),
       id_clasif: sessionStorage.getItem('id_clasif'),
-      max: sessionStorage.getItem('max'),
       min: sessionStorage.getItem('min'),
+      max: sessionStorage.getItem('max'),
       existencias: sessionStorage.getItem('existencias'),
       presentacion: sessionStorage.getItem('presentacion'),
       unidad: sessionStorage.getItem('unidad'),
       estatus: sessionStorage.getItem('estatus')
     };
+    console.log(oProduct);
     return oProduct;
   }
 
@@ -170,7 +171,6 @@ export class ProductsComponent implements OnInit {
       switch (this.action) {
         case 'new':
           tokenResponse = await this.authenticationService.tokenAdd(this.tokenRequest);
-
           this.productAddRequest = {
             json: {
               user_data: {
@@ -192,6 +192,7 @@ export class ProductsComponent implements OnInit {
             }
           };
           response = await this.protectedService.saveProduct(this.productAddRequest);
+          this.productForm.reset(this.resetProduct());
           break;
 
         case 'edit':
@@ -218,6 +219,7 @@ export class ProductsComponent implements OnInit {
             }
           };
           response = await this.protectedService.editProduct(this.productEditRequest);
+          this.closeModal();
           break;
 
         default:
@@ -225,7 +227,8 @@ export class ProductsComponent implements OnInit {
           break;
       }
       await this.retrieveProducts();
-      this.productForm.reset(this.resetProduct());
+      await this.retrieveSuppliers();
+      await this.retrieveRankings();
       await this.spinner.hide('sp');
       await this.router.navigateByUrl('protected/products');
     } catch (e) {

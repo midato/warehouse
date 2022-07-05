@@ -46,7 +46,7 @@
   </div>
 </div>
 
-<!-- New/Edit Prdduct Modal -->
+<!-- New/Edit Product Modal -->
 <div class="modal fade"
      id="productModal"
      tabindex="-1"
@@ -197,7 +197,7 @@
                 * La presentación es obligatoria
               </div>
             </div>
-            <div class="col">
+            <!--<div class="col">
               <div class="input-group mb-3">
                 <span class="input-group-text">@</span>
                 <input type="text"
@@ -212,6 +212,24 @@
               </div>
               <div class="text-danger mb-3"
                    *ngIf="formProductReference.unidad.touched && formProductReference.unidad.errors?.required">
+                * La unidad es obligatoria
+              </div>
+            </div>-->
+            <div class="col">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="supplier">Unidad</label>
+                <select class="form-select"
+                        id="unidad"
+                        name="unidad"
+                        formControlName="id_unidad"
+                >
+                  <option [ngValue]="null">Elegir...</option>
+                  <option *ngFor="let unit of units"
+                          [ngValue]="unit.id">{{unit.nombre}}</option>
+                </select>
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formProductReference.id_unidad.touched && formProductReference.id_unidad.errors?.required">
                 * La unidad es obligatoria
               </div>
             </div>

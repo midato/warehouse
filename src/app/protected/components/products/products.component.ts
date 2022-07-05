@@ -16,6 +16,7 @@ import { ProductEditRequest } from '../../interfaces/product-edit-request.interf
 import { ProductRemoveRequest } from '../../interfaces/product-remove-request.interface';
 import { Proveedor, SupplierListResponse } from '../../interfaces/supplier-list-response.interface';
 import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
+import { Unidad, UnitListResponse } from '../../interfaces/unit-list-response.interface';
 
 @Component({
   selector: 'app-products',
@@ -37,6 +38,7 @@ export class ProductsComponent implements OnInit {
   products: any;
   suppliers: Proveedor[];
   rankings: Clasificacion[];
+  units: Unidad[];
   userId: string;
   action: string;
   modal: any;
@@ -58,6 +60,7 @@ export class ProductsComponent implements OnInit {
       await this.retrieveProducts();
       await this.retrieveSuppliers();
       await this.retrieveRankings();
+      await this.retrieveUnits();
       await this.spinner.hide('gral');
     }, 100);
   }
@@ -80,7 +83,7 @@ export class ProductsComponent implements OnInit {
       min: [ null, [ Validators.required ] ],
       existencias: [ null, [ Validators.required ] ],
       presentacion: [ '', [ Validators.required ] ],
-      unidad: [ '', [ Validators.required ] ],
+      id_unidad: [ null, [ Validators.required ] ],
       estatus: [ false, Validators.required ]
     });
   }
@@ -94,7 +97,7 @@ export class ProductsComponent implements OnInit {
       max: sessionStorage.getItem('max'),
       existencias: sessionStorage.getItem('existencias'),
       presentacion: sessionStorage.getItem('presentacion'),
-      unidad: sessionStorage.getItem('unidad'),
+      id_unidad: sessionStorage.getItem('id_unidad'),
       estatus: sessionStorage.getItem('estatus')
     };
     console.log(oProduct);
@@ -135,6 +138,18 @@ export class ProductsComponent implements OnInit {
     const response: RankingListResponse = await this.protectedService.retrieveRanking(allRankingsRequest);
     console.log(response);
     this.rankings = response.clasificaciones;
+  }
+
+  async retrieveUnits() {
+    const allUnitsRequest = {
+      json: {
+        user_id: +this.userId,
+        id: 0
+      }
+    };
+    const response: UnitListResponse = await this.protectedService.retrieveUnit(allUnitsRequest);
+    console.log(response);
+    this.units = response.unidades;
   }
 
   get formProductReference() {
@@ -179,13 +194,13 @@ export class ProductsComponent implements OnInit {
               },
               add_data: {
                 producto: this.productForm.value.producto,
-                id_prov: this.productForm.value.id_prov,
-                id_clasif: this.productForm.value.id_clasif,
+                id_prov: +this.productForm.value.id_prov,
+                id_clasif: +this.productForm.value.id_clasif,
                 max: this.productForm.value.max,
                 min: this.productForm.value.min,
                 existencias: this.productForm.value.existencias,
                 presentacion: this.productForm.value.presentacion,
-                unidad: this.productForm.value.unidad,
+                id_unidad: +this.productForm.value.id_unidad,
                 estatus: this.productForm.value.estatus ? 1 : 0
               },
               add_token: tokenResponse.add_token
@@ -206,13 +221,13 @@ export class ProductsComponent implements OnInit {
               edit_data: {
                 id_prod: +this.product.id_prod,
                 producto: this.productForm.value.producto,
-                id_prov: this.productForm.value.id_prov,
-                id_clasif: this.productForm.value.id_clasif,
+                id_prov: +this.productForm.value.id_prov,
+                id_clasif: +this.productForm.value.id_clasif,
                 max: this.productForm.value.max,
                 min: this.productForm.value.min,
                 existencias: this.productForm.value.existencias,
                 presentacion: this.productForm.value.presentacion,
-                unidad: this.productForm.value.unidad,
+                id_unidad: +this.productForm.value.id_unidad,
                 estatus: this.productForm.value.estatus ? 1 : 0
               },
               edit_token: tokenResponse.edit_token
@@ -248,7 +263,7 @@ export class ProductsComponent implements OnInit {
       min: product.min,
       existencias: product.existencias,
       presentacion: product.presentacion,
-      unidad: product.unidad,
+      id_unidad: product.id_unidad,
       estatus: +product.estatus === 1
     });
   }

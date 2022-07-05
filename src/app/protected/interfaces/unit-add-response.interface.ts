@@ -1,14 +1,14 @@
-export interface ProductAddResponse {
+export interface UnitAddResponse {
   log: Log;
   err_bool: number;
-  ins_producto: InsProducto;
+  ins_unidad: InsUnidad;
 }
 
-export interface InsProducto {
+export interface InsUnidad {
   error: number;
   error_desc: string;
-  producto_added: number;
-  producto_added_id: number;
+  unidad_added: number;
+  unidad_added_id: number;
   deleted_token: number;
 }
 
@@ -23,15 +23,9 @@ export interface JSON {
 }
 
 export interface AddData {
-  producto: string;
-  id_prov: number;
-  id_clasif: number;
-  max: number;
-  min: number;
-  existencias: number;
-  presentacion: string;
-  id_unidad: number;
-  estatus: number;
+  nombre: string;
+  unidad_base: number;
+  cant_base: number;
 }
 
 export interface UserData {

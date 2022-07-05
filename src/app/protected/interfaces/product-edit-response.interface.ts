@@ -30,7 +30,7 @@ export interface EditData {
   min: number;
   existencias: number;
   presentacion: string;
-  unidad: string;
+  id_unidad: number;
   estatus: number;
 }
 

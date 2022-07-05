@@ -16,7 +16,7 @@ export interface AddData {
   min: number;
   existencias: number;
   presentacion: string;
-  unidad: string;
+  id_unidad: number;
   estatus: number;
 }
 

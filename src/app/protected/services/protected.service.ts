@@ -37,6 +37,13 @@ import { ProductEditRequest } from '../interfaces/product-edit-request.interface
 import { ProductEditResponse } from '../interfaces/product-edit-response.interface';
 import { ProductRemoveRequest } from '../interfaces/product-remove-request.interface';
 import { ProductRemoveResponse } from '../interfaces/product-remove-response.interface';
+import { UnitListResponse } from '../interfaces/unit-list-response.interface';
+import { UnitAddRequest } from '../interfaces/unit-add-request.interface';
+import { UnitAddResponse } from '../interfaces/unit-add-response.interface';
+import { UnitEditRequest } from '../interfaces/unit-edit-request.interface';
+import { UnitEditResponse } from '../interfaces/unit-edit-response.interface';
+import { UnitRemoveRequest } from '../interfaces/unit-remove-request.interface';
+import { UnitRemoveResponse } from '../interfaces/unit-remove-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -166,6 +173,28 @@ export class ProtectedService {
   removeProduct(body: ProductRemoveRequest): Promise<ProductRemoveResponse> {
     const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_productos/borrar_producto`;
     return this.http.post<ProductRemoveResponse>(baseUrl, body).toPromise();
+  }
+
+  // UNITS
+  retrieveUnit(body: any): Promise<UnitListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_unidades/get_unidades/`;
+    return this.http.post<UnitListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveUnit(body: UnitAddRequest): Promise<UnitAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_unidades/agregar_unidad`;
+    return this.http.post<UnitAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editUnit(body: UnitEditRequest): Promise<UnitEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_unidades/editar_unidad`;
+    return this.http.post<UnitEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeUnit(body: UnitRemoveRequest): Promise<UnitRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_unidades/borrar_unidad`;
+    return this.http.post<UnitRemoveResponse>(baseUrl, body).toPromise();
   }
 
   // USERS

@@ -13,6 +13,6 @@ export interface Producto {
   min: string;
   existencias: string;
   presentacion: string;
-  unidad: string;
+  id_unidad: number;
   estatus: string;
 }

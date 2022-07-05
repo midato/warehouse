@@ -1,0 +1,201 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Unidades</h1>
+</div>
+<div id="container" class="container">
+  <div id="add"
+       class="bg-primary rounded-circle d-flex"
+       data-bs-toggle="modal"
+       data-bs-target="#unitModal"
+       (click)="resetForm()"
+  >
+    <span class="text-center">+</span>
+  </div>
+
+  <div *ngFor="let unit of units; index as i; first as isFirst"
+       class="cardClasif"
+       style="max-width: 230px;">
+    <div class="card-header d-flex justify-content-end">
+      <a data-bs-toggle="modal"
+         data-bs-target="#unitModal"
+         (click)="editUnit(unit)">
+        <i class="fa-solid fa-pen me-3"></i>
+      </a>
+      <a data-bs-toggle="modal"
+         data-bs-target="#unitRemoveModal"
+         (click)="selectUnit(unit)">
+        <i class="fa-regular fa-trash-can text-danger"></i>
+      </a>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{unit.nombre}}</h5>
+      <div class="d-flex align-items-center" style="height: 75px;">
+
+        <div style="display: block; margin-left: 1px; margin-right: 1px; width: 50%">
+          <p class="text-center fw-bold">Unidad Base</p>
+          <p class="form-control text-center fw-bold">{{unit.unidad_base}}</p>
+        </div>
+
+        <div style="display: block; margin-left: 1px; margin-right: 1px;; width: 50%">
+          <p class="text-center fw-bold">Cantidad Base</p>
+          <p class="form-control text-center fw-bold">{{unit.cant_base}}</p>
+        </div>
+
+      </div>
+
+      <!--<a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#unitModal"
+         (click)="editUnit(unit)"
+      >
+        Editar
+      </a>
+      <a class="btn btn-primary mt-3"
+         data-bs-toggle="modal"
+         data-bs-target="#unitRemoveModal"
+         (click)="selectUnit(unit)"
+      >
+        Borrar
+      </a>-->
+    </div>
+  </div>
+
+</div>
+
+<!-- New User Modal -->
+<div class="modal fade"
+     id="unitModal"
+     tabindex="-1"
+     aria-labelledby="unitModalLabel"
+     aria-hidden="true">
+  <form
+    id="unitEForm"
+    autocomplete="off"
+    [formGroup]="unitForm"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="unitModalLabel">Nueva unidad</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+          >
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text" id="basic-addon2">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Nombre de unidad"
+                   aria-label="nombre"
+                   aria-describedby="basic-addon1"
+                   id="nombre"
+                   name="nombre"
+                   formControlName="nombre"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formUnitReference.nombre.touched && formUnitReference.nombre.errors?.required">
+            * El nombre es obligatorio
+          </div>
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Unidad base"
+                   aria-label="unidad_base"
+                   aria-describedby="unidad_base"
+                   id="unidad_base"
+                   name="unidad_base"
+                   formControlName="unidad_base"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formUnitReference.unidad_base.touched && formUnitReference.unidad_base.errors?.required">
+            * La unidad base es obligatoria
+          </div>
+          <div class="input-group mt-3 mb-1">
+            <span class="input-group-text">@</span>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Cantidad base"
+                   aria-label="cant_base"
+                   aria-describedby="cant_base"
+                   id="cant_base"
+                   name="cant_base"
+                   formControlName="cant_base"
+            >
+          </div>
+          <div class="text-danger mb-3"
+               *ngIf="formUnitReference.cant_base.touched && formUnitReference.cant_base.errors?.required">
+            * La cantidad base es obligatoria
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-spinner layerName="sp" [fullScreen]=false></app-spinner>
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  [disabled]="unitForm.invalid"
+                  (click)="onSave()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Remove User Modal -->
+<div class="modal fade"
+     id="unitRemoveModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="unitRemoveModalLabel"
+     aria-hidden="true"
+     [ngStyle]="{'modal':modal}"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="unitRemoveModalLabel">Borrar usuario</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>-->
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>¿Estás seguro?</h5>
+        <div class="text-center">Se borrará <b>{{unit?.nombre}}</b></div>
+      </div>
+      <div class="modal-footer">
+        <app-spinner layerName="sr" [fullScreen]=false></app-spinner>
+        <button #closeButton
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+          No
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="removeUnit()"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-spinner layerName="gral" [fullScreen]=false></app-spinner>

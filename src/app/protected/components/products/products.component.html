@@ -13,8 +13,7 @@
   </div>
 
   <div *ngFor="let product of products; index as i; first as isFirst"
-       class="cardClasif"
-       style="max-width: 230px;">
+       class="cardClasif">
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
          data-bs-target="#productModal"
@@ -93,7 +92,7 @@
                 >
                   <option [ngValue]="null">Elegir...</option>
                   <option *ngFor="let supplier of suppliers"
-                          [ngValue]="supplier.id_prov">{{supplier.nombre}}</option>
+                          [value]="supplier.id_prov">{{supplier.nombre}}</option>
                 </select>
               </div>
               <div class="text-danger mb-3"
@@ -111,7 +110,7 @@
                 >
                   <option [ngValue]="null">Elegir...</option>
                   <option *ngFor="let ranking of rankings"
-                          [ngValue]="ranking.id_clasif">{{ranking.clasificacion}}</option>
+                          [value]="ranking.id_clasif">{{ranking.clasificacion}}</option>
                 </select>
               </div>
               <div class="text-danger mb-3"
@@ -197,24 +196,6 @@
                 * La presentación es obligatoria
               </div>
             </div>
-            <!--<div class="col">
-              <div class="input-group mb-3">
-                <span class="input-group-text">@</span>
-                <input type="text"
-                       class="form-control"
-                       placeholder="Unidad"
-                       aria-label="unidad"
-                       aria-describedby="unidad"
-                       id="unidad"
-                       name="unidad"
-                       formControlName="unidad"
-                >
-              </div>
-              <div class="text-danger mb-3"
-                   *ngIf="formProductReference.unidad.touched && formProductReference.unidad.errors?.required">
-                * La unidad es obligatoria
-              </div>
-            </div>-->
             <div class="col">
               <div class="input-group mb-3">
                 <label class="input-group-text" for="supplier">Unidad</label>
@@ -225,7 +206,7 @@
                 >
                   <option [ngValue]="null">Elegir...</option>
                   <option *ngFor="let unit of units"
-                          [ngValue]="unit.id">{{unit.nombre}}</option>
+                          [value]="unit.id">{{unit.nombre}}</option>
                 </select>
               </div>
               <div class="text-danger mb-3"

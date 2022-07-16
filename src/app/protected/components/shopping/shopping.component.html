@@ -1,0 +1,330 @@
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Compras</h1>
+</div>
+<div id="container" class="container">
+  <div id="add"
+       class="bg-primary rounded-circle d-flex"
+       data-bs-toggle="modal"
+       data-bs-target="#productModal"
+       (click)="resetForm()"
+  >
+    <span class="text-center">+</span>
+  </div>
+
+  <div *ngFor="let product of products; index as i; first as isFirst"
+       class="cardClasif">
+    <div class="card-header d-flex justify-content-end">
+      <a data-bs-toggle="modal"
+         data-bs-target="#productModal"
+         (click)="editProduct(product)">
+        <i class="fa-solid fa-pen me-3"></i>
+      </a>
+      <a data-bs-toggle="modal"
+         data-bs-target="#productRemoveModal"
+         (click)="selectProduct(product)">
+        <i class="fa-regular fa-trash-can text-danger"></i>
+      </a>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{product.producto}}</h5>
+      <div class="d-flex align-items-center" style="height: 75px;">
+
+        <div style="display: block; margin-left: 1px; margin-right: 1px; width: 50%">
+          <p class="text-center fw-bold">MIN</p>
+          <p class="form-control text-center fw-bold">{{product.min}}</p>
+        </div>
+
+        <div style="display: block; margin-left: 1px; margin-right: 1px;; width: 50%">
+          <p class="text-center fw-bold">MAX</p>
+          <p class="form-control text-center fw-bold">{{product.max}}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New/Edit Product Modal -->
+<div class="modal fade"
+     id="productModal"
+     tabindex="-1"
+     aria-labelledby="productModalLabel"
+     aria-hidden="true">
+  <form
+    id="productEForm"
+    autocomplete="off"
+    [formGroup]="shoppingForm"
+  >
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="productModalLabel">Nueva compra</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="supplier">Proveedor</label>
+                <select class="form-select"
+                        id="supplier"
+                        name="supplier"
+                        formControlName="id_proveedor"
+                >
+                  <option [value]="null">Elegir...</option>
+                  <option *ngFor="let supplier of suppliers"
+                          [value]="supplier.id_prov">{{supplier.nombre}}</option>
+                </select>
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formShoppingReference.id_proveedor.touched && formShoppingReference.id_proveedor.errors?.required">
+                * El proveedor es obligatorio
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="supplier">Almacén</label>
+                <select class="form-select"
+                        id="stock"
+                        name="stock"
+                        formControlName="id_almacen"
+                >
+                  <option [value]="null">Elegir...</option>
+                  <option *ngFor="let stock of stocks"
+                          [value]="stock.id">{{stock.nombre}}</option>
+                </select>
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formShoppingReference.id_almacen.touched && formShoppingReference.id_almacen.errors?.required">
+                * El proveedor es obligatorio
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
+                <span class="input-group-text">Total</span>
+                <input type="text"
+                       class="form-control"
+                       placeholder="Total"
+                       aria-label="total"
+                       aria-describedby="total"
+                       id="total"
+                       name="total"
+                       formControlName="total"
+                >
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formShoppingReference.total.touched && formShoppingReference.total.errors?.required">
+                * El total es obligatorio
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12 form-group marL40" *ngIf="productos != null">
+              <div style="margin-top: 15px">
+                <div class="row d-flex panel-heading text-bold" style="margin-top: 0; font-size: 20px">
+                  <div class="col text-center">
+                    Detalle de la Compra
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+
+                    <table class="table">
+                      <thead class="thead-dark">
+                      <tr>
+                        <th>No</th>
+                        <th>Producto</th>
+                        <th>Guardar producto como...</th>
+                        <th>Cantidad</th>
+                        <th>Precio unitario</th>
+                        <th>Subtotal</th>
+                        <th>Presentación</th>
+                        <th>Unidad</th>
+                      </tr>
+                      </thead>
+                      <tbody formArrayName="productos">
+                      <tr *ngFor="let item of productos.controls; let i = index" [formGroupName]="i">
+                        <td> {{ i + 1 }}</td>
+                        <td>
+                          <div class="input-group mb-3">
+                            <select class="form-select"
+                                    id="id_producto"
+                                    name="id_producto"
+                                    formControlName="id_producto"
+                                    (change)="getProductName($event, i)"
+                            >
+                              <option [value]="0">Elegir...</option>
+                              <option *ngFor="let product of products"
+                                      [value]="product.id_prod">{{product.producto}}</option>
+                            </select>
+                          </div>
+                          <!--<div class="text-danger mb-3"
+                               *ngIf="item.id_producto.touched && i.id_producto.errors?.required">
+                            * El producto es obligatorio
+                          </div>-->
+                        </td>
+                        <td>
+                          <input type="text" placeholder="producto" class="form-control" formControlName="producto">
+                        </td>
+                        <td>
+                          <input type="text"
+                                 placeholder="cantidad"
+                                 class="form-control"
+                                 formControlName="cantidad"
+                                 (blur)="getSubtotal(i)"
+                          >
+                        </td>
+                        <td>
+                          <input type="text"
+                                 placeholder="precio"
+                                 class="form-control"
+                                 formControlName="precio"
+                                 (blur)="getSubtotal(i)"
+                          >
+                        </td>
+                        <td>
+                          <input type="text" placeholder="subtotal" class="form-control" formControlName="subtotal">
+                        </td>
+                        <td>
+                          <input type="text" placeholder="presentacion" class="form-control"
+                                 formControlName="presentacion">
+                        </td>
+                        <td>
+                          <div class="input-group mb-3">
+                            <select class="form-select"
+                                    id="id_unidad"
+                                    name="id_unidad"
+                                    formControlName="id_unidad"
+                            >
+                              <option [value]="0">Elegir...</option>
+                              <option *ngFor="let unit of units"
+                                      [value]="unit.id">{{unit.nombre}}</option>
+                            </select>
+                          </div>
+                          <!--<div class="text-danger mb-3"
+                               *ngIf="formShoppingReference.id_unidad.touched && formShoppingReference.id_unidad.errors?.required">
+                            * El producto es obligatorio
+                          </div>-->
+                        </td>
+                        <td>
+                          <button class="btn btn-danger"
+                                  (click)="removeNewProduct(i)">
+                            Borrar
+                          </button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+
+                    <button class="btn btn-primary mt-3 mb-5 btn-block"
+                            type="button"
+                            (click)="addNewProduct()">
+                      + Agregar
+                    </button>
+
+                  </div>
+                </div>
+
+                <!--<div class="row">
+                  <div class="col-md-3 form-grou input-group-text">Nombre producto</div>
+                  <div class="col-md-3 form-group input-group-text">Cantidad</div>
+                  <div class="col-md-3 form-group input-group-text">Precio unitario</div>
+                  <div class="col-md-3 form-group input-group-text">Presentación</div>
+                </div>
+                <ng-container *ngFor="let item of productos.controls; let i = index" [formGroupName]="i">
+                  <div class="row">
+                    <div class="col-md-2 form-group">
+                      <input matInput placeholder="producto" class="form-control" formControlName="producto">
+                    </div>
+                    <div class="col-md-2 form-group">
+                      <input matInput placeholder="cantidad" class="form-control" formControlName="cantidad">
+                    </div>
+                    <div class="col-md-2 form-group">
+                      <input matInput placeholder="precio" class="form-control" formControlName="precio">
+                    </div>
+                    <div class="col-md-2 form-group">
+                      <input matInput placeholder="presentacion" class="form-control" formControlName="presentacion">
+                    </div>
+                    <div class="col-md-2 form-group">
+                      <button (click)="removeNewProduct(i)" class="btn btn-danger">X</button>
+                    </div>
+                  </div>
+                </ng-container>-->
+                <!--<div class="form-group" style="text-align: right">
+                  <button type="button"
+                          (click)="addNewProduct()"
+                          class="btn btn-primary"
+                  >Nuevo producto
+                  </button>
+                </div>-->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <app-spinner layerName="sp" [fullScreen]=false></app-spinner>
+          <button type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+          >
+            Cerrar
+          </button>
+          <button type="button"
+                  class="btn btn-primary"
+                  [disabled]="shoppingForm.invalid"
+                  (click)="onSave()"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Remove Product Modal -->
+<!--<div class="modal fade"
+     id="productRemoveModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="productRemoveModalLabel"
+     aria-hidden="true"
+     [ngStyle]="{'modal':modal}"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productRemoveModalLabel">Borrar usuario</h5>
+        &lt;!&ndash;<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>&ndash;&gt;
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>¿Estás seguro?</h5>
+        <div class="text-center">Se borrará <b>{{product?.producto}}</b></div>
+      </div>
+      <div class="modal-footer">
+        <app-spinner layerName="sr" [fullScreen]=false></app-spinner>
+        <button #closeButton
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+        >
+          No
+        </button>
+        <button type="button"
+                class="btn btn-primary"
+                (click)="removeProduct()"
+        >
+          Si
+        </button>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+<app-spinner layerName="gral" [fullScreen]=false></app-spinner>

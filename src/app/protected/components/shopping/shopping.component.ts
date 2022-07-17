@@ -6,15 +6,14 @@ import { ProductRemoveRequest } from '../../interfaces/product-remove-request.in
 import { ProductAddRequest } from '../../interfaces/product-add-request.interface';
 import { ProductEditRequest } from '../../interfaces/product-edit-request.interface';
 import { Proveedor, SupplierListResponse } from '../../interfaces/supplier-list-response.interface';
-import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
+// import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
 import { Unidad, UnitListResponse } from '../../interfaces/unit-list-response.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../anonymous/services/authentication.service';
 import { ProtectedService } from '../../services/protected.service';
-import { Alerts } from '../../../shared/utils';
+// import { Alerts } from '../../../shared/utils';
 import { Almacen, StockListResponse } from '../../interfaces/stock-list-response.interface';
-import { ShoppingProduct } from '../../ models/shopping-product.model';
 import * as _ from 'lodash';
 
 @Component({
@@ -29,7 +28,6 @@ export class ShoppingComponent implements OnInit {
   shoppingForm: FormGroup;
   TotalRow: number;
 
-
   product: Producto;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: ProductRemoveRequest = {} as ProductRemoveRequest;
@@ -38,6 +36,7 @@ export class ShoppingComponent implements OnInit {
 
   loading: false;
   products: any;
+  shoppings: Proveedor[];
   suppliers: Proveedor[];
   stocks: Almacen[];
   // rankings: Clasificacion[];
@@ -84,9 +83,7 @@ export class ShoppingComponent implements OnInit {
 
   getSubtotal(index: number) {
     const quantity = (this.productos.at(index) as FormGroup).controls.cantidad.value;
-    console.log(quantity);
     const price = (this.productos.at(index) as FormGroup).controls.precio.value;
-    console.log(price);
     const subtotal = quantity * price;
     (this.productos.at(index) as FormGroup).controls.subtotal.patchValue(subtotal);
     (this.productos.at(index) as FormGroup).controls.subtotal.disable();
@@ -170,6 +167,18 @@ export class ShoppingComponent implements OnInit {
     return oProduct;
   }*/
 
+  async retrieveShopping() {
+    const allProductsRequest = {
+      json: {
+        user_id: +this.userId,
+        id_prod: 0
+      }
+    };
+    const response: ProductListResponse = await this.protectedService.retrieveProduct(allProductsRequest);
+    console.log(response);
+    this.products = response.productos;
+  }
+
   async retrieveProducts() {
     const allProductsRequest = {
       json: {
@@ -205,18 +214,6 @@ export class ShoppingComponent implements OnInit {
     console.log(response);
     this.stocks = response.almacenes;
   }
-
-  /*async retrieveRankings() {
-    const allRankingsRequest = {
-      json: {
-        user_id: +this.userId,
-        id_clasificacion: 0
-      }
-    };
-    const response: RankingListResponse = await this.protectedService.retrieveRanking(allRankingsRequest);
-    console.log(response);
-    this.rankings = response.clasificaciones;
-  }*/
 
   async retrieveUnits() {
     const allUnitsRequest = {

@@ -60,7 +60,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="productModalLabel">Nueva compra</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <!-- button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button -->
         </div>
         <div class="modal-body">
           <div class="row">
@@ -185,11 +185,18 @@
                           >
                         </td>
                         <td>
-                          <input type="text" placeholder="subtotal" class="form-control" formControlName="subtotal">
+                          <input type="text"
+                                 placeholder="subtotal"
+                                 class="form-control"
+                                 formControlName="subtotal"
+                          >
                         </td>
                         <td>
-                          <input type="text" placeholder="presentacion" class="form-control"
-                                 formControlName="presentacion">
+                          <input type="text"
+                                 placeholder="presentacion"
+                                 class="form-control"
+                                 formControlName="presentacion"
+                          >
                         </td>
                         <td>
                           <div class="input-group mb-3">
@@ -209,56 +216,22 @@
                           </div>-->
                         </td>
                         <td>
-                          <button class="btn btn-danger"
-                                  (click)="removeNewProduct(i)">
-                            Borrar
+                          <button class="btn" style="padding: 0rem 0.75rem;" (click)="removeNewProduct(i)">
+                            <i class="fa fa-trash fa-2x"></i>
                           </button>
                         </td>
                       </tr>
                       </tbody>
                     </table>
-
-                    <button class="btn btn-primary mt-3 mb-5 btn-block"
-                            type="button"
-                            (click)="addNewProduct()">
-                      + Agregar
+                  </div>
+                </div>
+                <div class="row float-right">
+                  <div class="col" style="text-align: right">
+                    <button class="btn btn-primary mt-3 btn-block" type="button" (click)="addNewProduct()">
+                      <i class="fa fa-plus fa-2x"></i>
                     </button>
-
                   </div>
                 </div>
-
-                <!--<div class="row">
-                  <div class="col-md-3 form-grou input-group-text">Nombre producto</div>
-                  <div class="col-md-3 form-group input-group-text">Cantidad</div>
-                  <div class="col-md-3 form-group input-group-text">Precio unitario</div>
-                  <div class="col-md-3 form-group input-group-text">Presentación</div>
-                </div>
-                <ng-container *ngFor="let item of productos.controls; let i = index" [formGroupName]="i">
-                  <div class="row">
-                    <div class="col-md-2 form-group">
-                      <input matInput placeholder="producto" class="form-control" formControlName="producto">
-                    </div>
-                    <div class="col-md-2 form-group">
-                      <input matInput placeholder="cantidad" class="form-control" formControlName="cantidad">
-                    </div>
-                    <div class="col-md-2 form-group">
-                      <input matInput placeholder="precio" class="form-control" formControlName="precio">
-                    </div>
-                    <div class="col-md-2 form-group">
-                      <input matInput placeholder="presentacion" class="form-control" formControlName="presentacion">
-                    </div>
-                    <div class="col-md-2 form-group">
-                      <button (click)="removeNewProduct(i)" class="btn btn-danger">X</button>
-                    </div>
-                  </div>
-                </ng-container>-->
-                <!--<div class="form-group" style="text-align: right">
-                  <button type="button"
-                          (click)="addNewProduct()"
-                          class="btn btn-primary"
-                  >Nuevo producto
-                  </button>
-                </div>-->
               </div>
             </div>
           </div>

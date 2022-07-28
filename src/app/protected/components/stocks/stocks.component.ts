@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -22,7 +22,7 @@ export class StocksComponent implements OnInit {
   @ViewChild('closeButton') closeButton;
   // @ViewChild('stockModal') stockModal;
 
-  stockForm: FormGroup;
+  stockForm: UntypedFormGroup;
   stock: Almacen;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: TokenRemoveRequest = {} as TokenRemoveRequest;
@@ -38,7 +38,7 @@ export class StocksComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService
   ) {
@@ -111,7 +111,7 @@ export class StocksComponent implements OnInit {
     await this.spinner.show('sp');
     if (this.stockForm.invalid) {
       return Object.values(this.stockForm.controls).forEach((control) => {
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );

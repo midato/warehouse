@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -19,13 +19,13 @@ export class LoginComponent implements OnInit {
   focus: any;
   focus1: any;
 
-  loginForm: FormGroup;
+  loginForm: UntypedFormGroup;
   loginRequest: LoginRequest = {} as LoginRequest;
 
   constructor(
     private router: Router,
     private spinner: NgxSpinnerService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService
   ) {
   }

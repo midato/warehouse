@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 
 import { ProductListResponse, Producto } from '../../interfaces/product-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
@@ -31,7 +31,7 @@ export class ShoppingComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
 
-  shoppingForm: FormGroup;
+  shoppingForm: UntypedFormGroup;
   TotalRow: number;
 
   product: Producto;
@@ -57,7 +57,7 @@ export class ShoppingComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService,
     private globalService: GlobalService
@@ -84,8 +84,8 @@ export class ShoppingComponent implements OnInit {
     console.log(this.productos.controls);
     console.log(this.productos.controls.length);
     for (let i = 0; i < this.productos.controls.length; i++) {
-      const quantity = (this.productos.at(i) as FormGroup).controls.cantidad.value;
-      const price = (this.productos.at(i) as FormGroup).controls.precio.value;
+      const quantity = (this.productos.at(i) as UntypedFormGroup).controls.cantidad.value;
+      const price = (this.productos.at(i) as UntypedFormGroup).controls.precio.value;
       const subtotal = quantity * price;
       total += subtotal;
     }
@@ -93,22 +93,22 @@ export class ShoppingComponent implements OnInit {
   }
 
   getSubtotal(index: number) {
-    const quantity = (this.productos.at(index) as FormGroup).controls.cantidad.value;
-    const price = (this.productos.at(index) as FormGroup).controls.precio.value;
+    const quantity = (this.productos.at(index) as UntypedFormGroup).controls.cantidad.value;
+    const price = (this.productos.at(index) as UntypedFormGroup).controls.precio.value;
     const subtotal = quantity * price;
-    (this.productos.at(index) as FormGroup).controls.cantidad.patchValue(+quantity);
-    (this.productos.at(index) as FormGroup).controls.subtotal.patchValue(subtotal);
-    (this.productos.at(index) as FormGroup).controls.subtotal.disable();
+    (this.productos.at(index) as UntypedFormGroup).controls.cantidad.patchValue(+quantity);
+    (this.productos.at(index) as UntypedFormGroup).controls.subtotal.patchValue(subtotal);
+    (this.productos.at(index) as UntypedFormGroup).controls.subtotal.disable();
     this.sum();
   }
 
   getProductName(event: any, index: number) {
     const item = this.getProductSelected(event.target.value, this.products)[0];
     console.log(item);
-    (this.productos.at(index) as FormGroup).controls.producto.patchValue(item.producto);
-    (this.productos.at(index) as FormGroup).controls.precio.patchValue(item.precio);
-    (this.productos.at(index) as FormGroup).controls.presentacion.patchValue(item.presentacion);
-    (this.productos.at(index) as FormGroup).controls.id_unidad.patchValue(item.id_unidad);
+    (this.productos.at(index) as UntypedFormGroup).controls.producto.patchValue(item.producto);
+    (this.productos.at(index) as UntypedFormGroup).controls.precio.patchValue(item.precio);
+    (this.productos.at(index) as UntypedFormGroup).controls.presentacion.patchValue(item.presentacion);
+    (this.productos.at(index) as UntypedFormGroup).controls.id_unidad.patchValue(item.id_unidad);
   }
 
   getProductSelected(id, object) {
@@ -119,19 +119,19 @@ export class ShoppingComponent implements OnInit {
   }
 
   initProduct() {
-    return new FormGroup({
-      id_producto: new FormControl(0, [ Validators.required ]),
-      producto: new FormControl('', [ Validators.required ]),
-      cantidad: new FormControl(0, [ Validators.required ]),
-      precio: new FormControl(0, [ Validators.required ]),
-      subtotal: new FormControl(0, [ Validators.required ]),
-      presentacion: new FormControl('', [ Validators.required ]),
-      id_unidad: new FormControl(0, [ Validators.required ])
+    return new UntypedFormGroup({
+      id_producto: new UntypedFormControl(0, [ Validators.required ]),
+      producto: new UntypedFormControl('', [ Validators.required ]),
+      cantidad: new UntypedFormControl(0, [ Validators.required ]),
+      precio: new UntypedFormControl(0, [ Validators.required ]),
+      subtotal: new UntypedFormControl(0, [ Validators.required ]),
+      presentacion: new UntypedFormControl('', [ Validators.required ]),
+      id_unidad: new UntypedFormControl(0, [ Validators.required ])
     });
   }
 
   get productos() {
-    return this.shoppingForm && this.shoppingForm.get('productos') as FormArray;
+    return this.shoppingForm && this.shoppingForm.get('productos') as UntypedFormArray;
   }
 
   addNewProduct() {
@@ -159,12 +159,12 @@ export class ShoppingComponent implements OnInit {
 
   async resetForm() {
     this.action = 'new';
-    this.shoppingForm = new FormGroup({
-      id_almacen: new FormControl(null, [ Validators.required ]),
-      id_proveedor: new FormControl(null, [ Validators.required ]),
-      fecha: new FormControl(null, [ Validators.required ]),
-      total: new FormControl(0, [ Validators.required ]),
-      productos: new FormArray([ this.initProduct() ])
+    this.shoppingForm = new UntypedFormGroup({
+      id_almacen: new UntypedFormControl(null, [ Validators.required ]),
+      id_proveedor: new UntypedFormControl(null, [ Validators.required ]),
+      fecha: new UntypedFormControl(null, [ Validators.required ]),
+      total: new UntypedFormControl(0, [ Validators.required ]),
+      productos: new UntypedFormArray([ this.initProduct() ])
     });
   }
 
@@ -267,7 +267,7 @@ export class ShoppingComponent implements OnInit {
     await this.spinner.show('sp');
     if (this.shoppingForm.invalid) {
       return Object.values(this.shoppingForm.controls).forEach((control) => {
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );

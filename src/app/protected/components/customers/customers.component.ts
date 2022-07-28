@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 
@@ -23,7 +23,7 @@ export class CustomersComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
 
-  customerForm: FormGroup;
+  customerForm: UntypedFormGroup;
   customer: Cliente;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: CustomerRemoveRequest = {} as CustomerRemoveRequest;
@@ -39,7 +39,7 @@ export class CustomersComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService
   ) {
@@ -100,7 +100,7 @@ export class CustomersComponent implements OnInit {
     await this.spinner.show('sp');
     if (this.customerForm.invalid) {
       return Object.values(this.customerForm.controls).forEach((control) => {
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );

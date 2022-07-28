@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Proveedor, SupplierListResponse } from '../../interfaces/supplier-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
 import { SupplierRemoveRequest } from '../../interfaces/supplier-remove-request.interface';
@@ -20,7 +20,7 @@ export class SuppliersComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
 
-  supplierForm: FormGroup;
+  supplierForm: UntypedFormGroup;
   supplier: Proveedor;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: SupplierRemoveRequest = {} as SupplierRemoveRequest;
@@ -36,7 +36,7 @@ export class SuppliersComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService
   ) {
@@ -97,7 +97,7 @@ export class SuppliersComponent implements OnInit {
     await this.spinner.show('sp');
     if (this.supplierForm.invalid) {
       return Object.values(this.supplierForm.controls).forEach((control) => {
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );

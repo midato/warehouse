@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
 import { RankingRemoveRequest } from '../../../anonymous/interfaces/ranking-remove-request.interface';
@@ -21,7 +21,7 @@ export class RankingsComponent implements OnInit {
   @ViewChild('closeButton') closeButton;
   // @ViewChild('rankingModal') rankingModal;
 
-  rankingForm: FormGroup;
+  rankingForm: UntypedFormGroup;
   ranking: Clasificacion;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: RankingRemoveRequest = {} as RankingRemoveRequest;
@@ -37,7 +37,7 @@ export class RankingsComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService
   ) {
@@ -104,7 +104,7 @@ export class RankingsComponent implements OnInit {
     await this.spinner.show('sp');
     if (this.rankingForm.invalid) {
       return Object.values(this.rankingForm.controls).forEach((control) => {
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );

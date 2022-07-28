@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { Alerts } from '../../../shared/utils';
@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
 
-  productForm: FormGroup;
+  productForm: UntypedFormGroup;
   product: Producto;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: ProductRemoveRequest = {} as ProductRemoveRequest;
@@ -46,7 +46,7 @@ export class ProductsComponent implements OnInit {
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService
   ) {
@@ -162,7 +162,7 @@ export class ProductsComponent implements OnInit {
     await this.spinner.show('sp');
     if (this.productForm.invalid) {
       return Object.values(this.productForm.controls).forEach((control) => {
-        if (control instanceof FormGroup) {
+        if (control instanceof UntypedFormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );

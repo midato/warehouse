@@ -44,6 +44,13 @@ import { UnitEditRequest } from '../interfaces/unit-edit-request.interface';
 import { UnitEditResponse } from '../interfaces/unit-edit-response.interface';
 import { UnitRemoveRequest } from '../interfaces/unit-remove-request.interface';
 import { UnitRemoveResponse } from '../interfaces/unit-remove-response.interface';
+import { ShoppingListResponse } from '../interfaces/shopping-list-response.interface';
+import { ShoppingAddRequest } from '../interfaces/shopping-add-request.interface';
+import { ShoppingAddResponse } from '../interfaces/shopping-add-response.interface';
+import { ShoppingEditRequest } from '../interfaces/shopping-edit-request.interface';
+import { ShoppingEditResponse } from '../interfaces/shopping-edit-response.interface';
+import { ShoppingRemoveRequest } from '../interfaces/shopping-remove-request.interface';
+import { ShoppingRemoveResponse } from '../interfaces/shopping-remove-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +65,28 @@ export class ProtectedService {
   constructor(
     private http: HttpClient
   ) {
+  }
+
+  // SHOPPINGS
+  retrieveShopping(body: any): Promise<ShoppingListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_compras/get_compras/`;
+    return this.http.post<ShoppingListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveShopping(body: ShoppingAddRequest): Promise<ShoppingAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_compras/agregar_compra`;
+    return this.http.post<ShoppingAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editShopping(body: ShoppingEditRequest): Promise<ShoppingEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_compras/editar_compra`;
+    return this.http.post<ShoppingEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeShopping(body: ShoppingRemoveRequest): Promise<ShoppingRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_compras/borrar_compra`;
+    return this.http.post<ShoppingRemoveResponse>(baseUrl, body).toPromise();
   }
 
   // STOCKS

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { ProductListResponse, Producto } from '../../interfaces/product-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
 import { ProductRemoveRequest } from '../../interfaces/product-remove-request.interface';
@@ -15,6 +16,11 @@ import { ProtectedService } from '../../services/protected.service';
 // import { Alerts } from '../../../shared/utils';
 import { Almacen, StockListResponse } from '../../interfaces/stock-list-response.interface';
 import * as _ from 'lodash';
+import { Compra, ShoppingListResponse } from '../../interfaces/shopping-list-response.interface';
+import { ShoppingAddRequest } from '../../interfaces/shopping-add-request.interface';
+import { Alerts } from '../../../shared/utils';
+import { GlobalService } from '../../../shared/services/global.service';
+import { ShoppingEditRequest } from '../../interfaces/shopping-edit-request.interface';
 
 @Component({
   selector: 'app-shopping',
@@ -29,14 +35,17 @@ export class ShoppingComponent implements OnInit {
   TotalRow: number;
 
   product: Producto;
+  shopping: Compra;
   tokenRequest: TokenRequest = {} as TokenRequest;
   tokenRemoveRequest: ProductRemoveRequest = {} as ProductRemoveRequest;
+  shoppingAddRequest: ShoppingAddRequest = {} as ShoppingAddRequest;
+  shoppingEditRequest: ShoppingEditRequest = {} as ShoppingEditRequest;
   productAddRequest: ProductAddRequest = {} as ProductAddRequest;
   productEditRequest: ProductEditRequest = {} as ProductEditRequest;
 
   loading: false;
   products: any;
-  shoppings: Proveedor[];
+  shoppings: any;
   suppliers: Proveedor[];
   stocks: Almacen[];
   // rankings: Clasificacion[];
@@ -50,7 +59,8 @@ export class ShoppingComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
-    private protectedService: ProtectedService
+    private protectedService: ProtectedService,
+    private globalService: GlobalService
   ) {
     this.resetForm();
   }
@@ -64,6 +74,7 @@ export class ShoppingComponent implements OnInit {
       await this.retrieveStocks();
       await this.retrieveProducts();
       await this.retrieveUnits();
+      await this.retrieveShoppings();
       await this.spinner.hide('gral');
     }, 100);
   }
@@ -85,6 +96,7 @@ export class ShoppingComponent implements OnInit {
     const quantity = (this.productos.at(index) as FormGroup).controls.cantidad.value;
     const price = (this.productos.at(index) as FormGroup).controls.precio.value;
     const subtotal = quantity * price;
+    (this.productos.at(index) as FormGroup).controls.cantidad.patchValue(+quantity);
     (this.productos.at(index) as FormGroup).controls.subtotal.patchValue(subtotal);
     (this.productos.at(index) as FormGroup).controls.subtotal.disable();
     this.sum();
@@ -92,7 +104,11 @@ export class ShoppingComponent implements OnInit {
 
   getProductName(event: any, index: number) {
     const item = this.getProductSelected(event.target.value, this.products)[0];
+    console.log(item);
     (this.productos.at(index) as FormGroup).controls.producto.patchValue(item.producto);
+    (this.productos.at(index) as FormGroup).controls.precio.patchValue(item.precio);
+    (this.productos.at(index) as FormGroup).controls.presentacion.patchValue(item.presentacion);
+    (this.productos.at(index) as FormGroup).controls.id_unidad.patchValue(item.id_unidad);
   }
 
   getProductSelected(id, object) {
@@ -146,12 +162,13 @@ export class ShoppingComponent implements OnInit {
     this.shoppingForm = new FormGroup({
       id_almacen: new FormControl(null, [ Validators.required ]),
       id_proveedor: new FormControl(null, [ Validators.required ]),
+      fecha: new FormControl(null, [ Validators.required ]),
       total: new FormControl(0, [ Validators.required ]),
       productos: new FormArray([ this.initProduct() ])
     });
   }
 
-  /*resetProduct() {
+  resetProduct() {
     const oProduct = {
       producto: sessionStorage.getItem('producto'),
       id_prov: sessionStorage.getItem('id_prov'),
@@ -165,7 +182,7 @@ export class ShoppingComponent implements OnInit {
     };
     console.log(oProduct);
     return oProduct;
-  }*/
+  }
 
   async retrieveShopping() {
     const allProductsRequest = {
@@ -176,7 +193,7 @@ export class ShoppingComponent implements OnInit {
     };
     const response: ProductListResponse = await this.protectedService.retrieveProduct(allProductsRequest);
     console.log(response);
-    this.products = response.productos;
+    this.shoppings = response.productos;
   }
 
   async retrieveProducts() {
@@ -189,6 +206,20 @@ export class ShoppingComponent implements OnInit {
     const response: ProductListResponse = await this.protectedService.retrieveProduct(allProductsRequest);
     console.log(response);
     this.products = response.productos;
+  }
+
+  async retrieveShoppings() {
+    const allShoppingsRequest = {
+      json: {
+        user_id: +this.userId,
+        id: 0,
+        limit: 0,
+        offset: 0
+      }
+    };
+    const response: ShoppingListResponse = await this.protectedService.retrieveShopping(allShoppingsRequest);
+    console.log(response);
+    this.shoppings = response.compras;
   }
 
   async retrieveSuppliers() {
@@ -233,7 +264,7 @@ export class ShoppingComponent implements OnInit {
 
   async onSave() {
     console.log(this.shoppingForm.value);
-    /*await this.spinner.show('sp');
+    await this.spinner.show('sp');
     if (this.shoppingForm.invalid) {
       return Object.values(this.shoppingForm.controls).forEach((control) => {
         if (control instanceof FormGroup) {
@@ -246,6 +277,8 @@ export class ShoppingComponent implements OnInit {
       });
     }
 
+    const values = this.shoppingForm.value;
+    console.log(values);
     try {
       this.tokenRequest = {
         json: {
@@ -261,54 +294,54 @@ export class ShoppingComponent implements OnInit {
       switch (this.action) {
         case 'new':
           tokenResponse = await this.authenticationService.tokenAdd(this.tokenRequest);
-          this.productAddRequest = {
+          this.shoppingAddRequest = {
             json: {
               user_data: {
                 id_user: +this.userId,
                 user_active: 1
               },
               add_data: {
-                producto: this.shoppingForm.value.producto,
-                id_prov: +this.shoppingForm.value.id_prov,
-                id_clasif: +this.shoppingForm.value.id_clasif,
-                max: this.shoppingForm.value.max,
-                min: this.shoppingForm.value.min,
-                existencias: this.shoppingForm.value.existencias,
-                presentacion: this.shoppingForm.value.presentacion,
-                id_unidad: +this.shoppingForm.value.id_unidad,
-                estatus: this.shoppingForm.value.estatus ? 1 : 0
+                compra: {
+                  id_proveedor: values.id_proveedor,
+                  id_almacen: values.id_almacen,
+                  id_user: this.userId,
+                  total: values.total,
+                  fecha: this.globalService.formatDateToStringYY_MM_DD_HH_mm_ss(new Date())
+                },
+                productos: values.productos
               },
               add_token: tokenResponse.add_token
             }
           };
-          response = await this.protectedService.saveProduct(this.productAddRequest);
+
+          console.log(this.shoppingAddRequest);
+          response = await this.protectedService.saveShopping(this.shoppingAddRequest);
           this.shoppingForm.reset(this.resetProduct());
           break;
 
         case 'edit':
           tokenResponse = await this.authenticationService.tokenEdit(this.tokenRequest);
-          this.productEditRequest = {
+          this.shoppingEditRequest = {
             json: {
               user_data: {
                 id_user: +this.userId,
                 user_active: 1
               },
               edit_data: {
-                id_prod: +this.product.id_prod,
-                producto: this.shoppingForm.value.producto,
-                id_prov: +this.shoppingForm.value.id_prov,
-                id_clasif: +this.shoppingForm.value.id_clasif,
-                max: this.shoppingForm.value.max,
-                min: this.shoppingForm.value.min,
-                existencias: this.shoppingForm.value.existencias,
-                presentacion: this.shoppingForm.value.presentacion,
-                id_unidad: +this.shoppingForm.value.id_unidad,
-                estatus: this.shoppingForm.value.estatus ? 1 : 0
+                id_compra: '0',
+                compra: {
+                  id_proveedor: '1',
+                  id_almacen: '2',
+                  id_user: '1',
+                  total: '44.444',
+                  fecha: '2022-07-26 00:08:44'
+                },
+                productos: []
               },
               edit_token: tokenResponse.edit_token
             }
           };
-          response = await this.protectedService.editProduct(this.productEditRequest);
+          response = await this.protectedService.editShopping(this.shoppingEditRequest);
           this.closeModal();
           break;
 
@@ -316,20 +349,22 @@ export class ShoppingComponent implements OnInit {
           console.log('default...');
           break;
       }
-      // await this.retrieveProducts();
       await this.retrieveSuppliers();
-      // await this.retrieveRankings();
+      await this.retrieveStocks();
+      await this.retrieveProducts();
+      await this.retrieveUnits();
+      await this.retrieveShoppings();
       await this.spinner.hide('sp');
-      await this.router.navigateByUrl('protected/products');
+      await this.router.navigateByUrl('protected/shopping');
     } catch (e) {
       console.log(e);
       await this.spinner.hide('sp');
       const message = e.message; // error.error.detalles[0];
       await Alerts.customFailedButton('Easy Warehouse', 'error', message);
-    }*/
+    }
   }
 
-  loadProductForm(product: Producto) {
+  /*loadProductForm(shopping: Compra) {
     this.shoppingForm.reset({
       producto: product.producto,
       id_prov: product.id_prov,
@@ -341,16 +376,16 @@ export class ShoppingComponent implements OnInit {
       id_unidad: product.id_unidad,
       estatus: +product.estatus === 1
     });
-  }
+  }*/
 
-  editProduct(product: Producto) {
-    this.product = product;
+  editShopping(shopping: Compra) {
+    this.shopping = shopping;
     this.setAction('edit');
-    this.loadProductForm(product);
+    // this.loadProductForm(shopping);
   }
 
-  selectProduct(product: Producto) {
-    this.product = product;
+  selectShopping(shopping: Compra) {
+    this.shopping = shopping;
   }
 
   async removeProduct() {
@@ -379,7 +414,7 @@ export class ShoppingComponent implements OnInit {
       };
       const response = await this.protectedService.removeProduct(this.tokenRemoveRequest);
       console.log(response);
-      await this.retrieveProducts();
+      await this.retrieveShoppings();
       // this.shoppingForm.reset(this.resetProduct());
       await this.spinner.hide('sr');
       this.closeModal();

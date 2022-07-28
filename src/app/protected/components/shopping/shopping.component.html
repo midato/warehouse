@@ -6,40 +6,48 @@
   <div id="add"
        class="bg-primary rounded-circle d-flex"
        data-bs-toggle="modal"
-       data-bs-target="#productModal"
+       data-bs-target="#shoppingModal"
        (click)="resetForm()"
   >
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let product of products; index as i; first as isFirst"
+  <div *ngFor="let shopping of shoppings; index as i; first as isFirst"
        class="cardClasif">
+    <!--<div>
+      Compra: {{shopping | json}}
+    </div>-->
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
-         data-bs-target="#productModal"
-         (click)="editProduct(product)">
+         data-bs-target="#shoppingModal"
+         (click)="editShopping(shopping)">
         <i class="fa-solid fa-pen me-3"></i>
       </a>
       <a data-bs-toggle="modal"
-         data-bs-target="#productRemoveModal"
-         (click)="selectProduct(product)">
+         data-bs-target="#shoppingRemoveModal"
+         (click)="selectShopping(shopping)">
         <i class="fa-regular fa-trash-can text-danger"></i>
       </a>
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{product.producto}}</h5>
+      <p class="text-center fw-bold">FECHA de COMPRA</p>
+      <h5 class="card-title">{{shopping.fecha}}</h5>
       <div class="d-flex align-items-center" style="height: 75px;">
 
         <div style="display: block; margin-left: 1px; margin-right: 1px; width: 50%">
-          <p class="text-center fw-bold">MIN</p>
-          <p class="form-control text-center fw-bold">{{product.min}}</p>
+          <p class="text-center fw-bold">PRODUCTOS</p>
+          <p class="form-control text-center fw-bold">{{shoppings.length}}</p>
         </div>
 
         <div style="display: block; margin-left: 1px; margin-right: 1px;; width: 50%">
-          <p class="text-center fw-bold">MAX</p>
-          <p class="form-control text-center fw-bold">{{product.max}}</p>
+          <p class="text-center fw-bold">TOTAL</p>
+          <p class="form-control text-center fw-bold">{{shopping.total}}</p>
         </div>
 
+        <div>
+          <input [matDatepicker]="myDatepicker">
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </div>
       </div>
     </div>
   </div>
@@ -47,19 +55,19 @@
 
 <!-- New/Edit Product Modal -->
 <div class="modal fade"
-     id="productModal"
+     id="shoppingModal"
      tabindex="-1"
-     aria-labelledby="productModalLabel"
+     aria-labelledby="shoppingModalLabel"
      aria-hidden="true">
   <form
-    id="productEForm"
+    id="shoppingEForm"
     autocomplete="off"
     [formGroup]="shoppingForm"
   >
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="productModalLabel">Nueva compra</h5>
+          <h5 class="modal-title" id="shoppingModalLabel">Nueva compra</h5>
           <!-- button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button -->
         </div>
         <div class="modal-body">
@@ -102,6 +110,23 @@
             </div>
             <div class="col">
               <div class="input-group mb-3">
+                <label class="input-group-text" for="supplier">Fecha</label>
+
+                <input [matDatepicker]="myDatepicker">
+                <mat-datepicker #myDatepicker></mat-datepicker>
+
+
+
+
+
+              </div>
+              <div class="text-danger mb-3"
+                   *ngIf="formShoppingReference.id_almacen.touched && formShoppingReference.id_almacen.errors?.required">
+                * La fecha es obligatoria
+              </div>
+            </div>
+            <div class="col">
+              <div class="input-group mb-3">
                 <span class="input-group-text">Total</span>
                 <input type="text"
                        class="form-control"
@@ -120,11 +145,13 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-12 form-group marL40" *ngIf="productos != null">
+            <div class="col-xs-12 form-group marL40"
+                 *ngIf="productos != null"
+            >
               <div style="margin-top: 15px">
                 <div class="row d-flex panel-heading text-bold" style="margin-top: 0; font-size: 20px">
                   <div class="col text-center">
-                    Detalle de la Compra
+                    DETALLE DE LA COMPRA
                   </div>
                 </div>
 
@@ -166,7 +193,11 @@
                           </div>-->
                         </td>
                         <td>
-                          <input type="text" placeholder="producto" class="form-control" formControlName="producto">
+                          <input type="text"
+                                 placeholder="producto"
+                                 class="form-control"
+                                 formControlName="producto"
+                          >
                         </td>
                         <td>
                           <input type="text"

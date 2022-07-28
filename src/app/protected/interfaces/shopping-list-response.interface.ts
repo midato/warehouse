@@ -1,15 +1,10 @@
 export interface ShoppingListResponse {
   log: string;
   err_bool: number;
-  compras: { [key: string]: CompraValue };
+  compras: Compra[];
 }
 
-export interface CompraValue {
-  compra: CompraCompra;
-  productos: Producto[];
-}
-
-export interface CompraCompra {
+export interface Compra {
   id: string;
   id_proveedor: string;
   id_almacen: string;
@@ -17,6 +12,7 @@ export interface CompraCompra {
   id_user: string;
   total: string;
   fecha: Date;
+  productos: Producto[];
 }
 
 export interface Producto {

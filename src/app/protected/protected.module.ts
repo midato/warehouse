@@ -4,6 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 import { SharedModule } from '../shared/shared.module';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
 
@@ -17,6 +22,13 @@ import { UsersComponent } from './components/users/users.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { UnitsComponent } from './components/units/units.component';
 import { ShoppingComponent } from './components/shopping/shopping.component';
+
+const materialModules = [
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatFormFieldModule,
+  MatInputModule
+];
 
 @NgModule({
   declarations: [
@@ -37,7 +49,11 @@ import { ShoppingComponent } from './components/shopping/shopping.component';
     ReactiveFormsModule,
     SharedModule,
     SharedRoutingModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ...materialModules
+  ],
+  exports: [
+    ...materialModules
   ]
 })
 export class ProtectedModule {

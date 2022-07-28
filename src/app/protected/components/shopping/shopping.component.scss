@@ -4,6 +4,7 @@ body {
 
 .cardClasif {
   width: 300px !important;
+  height: 250px !important;
 }
 
 .card {
@@ -17,6 +18,11 @@ body {
   width: 200px;
   height: 200px;
   transition: all linear 200ms;
+}
+
+//#card-body-date {
+.card-body p {
+  margin-bottom: .2rem !important;
 }
 
 .card:hover {

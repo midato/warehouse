@@ -4,7 +4,7 @@ export interface ShoppingListRequest {
 
 export interface JSON {
   user_id: string;
-  id: number;
-  limit: number;
-  offset: number;
+  id:      number;
+  limit:   number;
+  offset:  number;
 }

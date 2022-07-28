@@ -36,3 +36,41 @@ body {
 .form-group {
   margin-bottom: 5px !important;
 }
+
+::ng-deep .cdk-overlay-container {
+  position: fixed !important;
+  z-index: 100000 !important; /* set value you need */
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-suffix .mat-icon-button {
+  font-size: 25px !important;
+}
+
+::ng-deep .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating), .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n+3), .input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-control, .input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-select {
+  height: 38px;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  height: 55px;
+}
+
+::ng-deep .mat-form-field-flex {
+  margin: 0 15px;
+}
+
+::ng-deep input.mat-input-element {
+  font-weight: 500;
+  font-size: 16px;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0;
+}
+
+::ng-deep .mat-form-field-flex {
+  width: 95% !important;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  width: 80%;
+}

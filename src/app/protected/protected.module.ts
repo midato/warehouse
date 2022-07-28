@@ -23,13 +23,6 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { UnitsComponent } from './components/units/units.component';
 import { ShoppingComponent } from './components/shopping/shopping.component';
 
-const materialModules = [
-  MatDatepickerModule,
-  MatNativeDateModule,
-  MatFormFieldModule,
-  MatInputModule
-];
-
 @NgModule({
   declarations: [
     HomeComponent,
@@ -47,13 +40,15 @@ const materialModules = [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+
     SharedModule,
     SharedRoutingModule,
-    NgxSpinnerModule,
-    ...materialModules
-  ],
-  exports: [
-    ...materialModules
+    NgxSpinnerModule
   ]
 })
 export class ProtectedModule {

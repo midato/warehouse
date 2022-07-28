@@ -1,19 +1,26 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
+import * as moment from 'moment';
 
 import { ProductListResponse, Producto } from '../../interfaces/product-list-response.interface';
+import { Producto as Prod } from '../../interfaces/shopping-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
 import { ProductRemoveRequest } from '../../interfaces/product-remove-request.interface';
 import { ProductAddRequest } from '../../interfaces/product-add-request.interface';
 import { ProductEditRequest } from '../../interfaces/product-edit-request.interface';
 import { Proveedor, SupplierListResponse } from '../../interfaces/supplier-list-response.interface';
-// import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
 import { Unidad, UnitListResponse } from '../../interfaces/unit-list-response.interface';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../anonymous/services/authentication.service';
 import { ProtectedService } from '../../services/protected.service';
-// import { Alerts } from '../../../shared/utils';
 import { Almacen, StockListResponse } from '../../interfaces/stock-list-response.interface';
 import * as _ from 'lodash';
 import { Compra, ShoppingListResponse } from '../../interfaces/shopping-list-response.interface';
@@ -21,6 +28,7 @@ import { ShoppingAddRequest } from '../../interfaces/shopping-add-request.interf
 import { Alerts } from '../../../shared/utils';
 import { GlobalService } from '../../../shared/services/global.service';
 import { ShoppingEditRequest } from '../../interfaces/shopping-edit-request.interface';
+import { ShoppingRemoveRequest } from '../../interfaces/shopping-remove-request.interface';
 
 @Component({
   selector: 'app-shopping',
@@ -30,38 +38,39 @@ import { ShoppingEditRequest } from '../../interfaces/shopping-edit-request.inte
 export class ShoppingComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
+  @ViewChild('closeButtonE') closeButtonE;
 
-  shoppingForm: UntypedFormGroup;
+  shoppingForm: FormGroup;
   TotalRow: number;
 
   product: Producto;
   shopping: Compra;
   tokenRequest: TokenRequest = {} as TokenRequest;
-  tokenRemoveRequest: ProductRemoveRequest = {} as ProductRemoveRequest;
+  tokenRemoveRequest: ShoppingRemoveRequest = {} as ShoppingRemoveRequest;
   shoppingAddRequest: ShoppingAddRequest = {} as ShoppingAddRequest;
   shoppingEditRequest: ShoppingEditRequest = {} as ShoppingEditRequest;
-  productAddRequest: ProductAddRequest = {} as ProductAddRequest;
-  productEditRequest: ProductEditRequest = {} as ProductEditRequest;
 
   loading: false;
   products: any;
   shoppings: any;
   suppliers: Proveedor[];
   stocks: Almacen[];
-  // rankings: Clasificacion[];
   units: Unidad[];
   userId: string;
   action: string;
   modal: any;
+  date: FormControl = new FormControl(new Date());
 
   constructor(
     private spinner: NgxSpinnerService,
     private router: Router,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private authenticationService: AuthenticationService,
     private protectedService: ProtectedService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private dateAdapter: DateAdapter<Date>
   ) {
+    this.dateAdapter.setLocale('es-MX'); // dd/MM/yyyy
     this.resetForm();
   }
 
@@ -84,8 +93,8 @@ export class ShoppingComponent implements OnInit {
     console.log(this.productos.controls);
     console.log(this.productos.controls.length);
     for (let i = 0; i < this.productos.controls.length; i++) {
-      const quantity = (this.productos.at(i) as UntypedFormGroup).controls.cantidad.value;
-      const price = (this.productos.at(i) as UntypedFormGroup).controls.precio.value;
+      const quantity = (this.productos.at(i) as FormGroup).controls.cantidad.value;
+      const price = (this.productos.at(i) as FormGroup).controls.precio.value;
       const subtotal = quantity * price;
       total += subtotal;
     }
@@ -93,22 +102,21 @@ export class ShoppingComponent implements OnInit {
   }
 
   getSubtotal(index: number) {
-    const quantity = (this.productos.at(index) as UntypedFormGroup).controls.cantidad.value;
-    const price = (this.productos.at(index) as UntypedFormGroup).controls.precio.value;
+    const quantity = (this.productos.at(index) as FormGroup).controls.cantidad.value;
+    const price = (this.productos.at(index) as FormGroup).controls.precio.value;
     const subtotal = quantity * price;
-    (this.productos.at(index) as UntypedFormGroup).controls.cantidad.patchValue(+quantity);
-    (this.productos.at(index) as UntypedFormGroup).controls.subtotal.patchValue(subtotal);
-    (this.productos.at(index) as UntypedFormGroup).controls.subtotal.disable();
+    (this.productos.at(index) as FormGroup).controls.cantidad.patchValue(+quantity);
+    (this.productos.at(index) as FormGroup).controls.subtotal.patchValue(subtotal);
+    (this.productos.at(index) as FormGroup).controls.subtotal.disable();
     this.sum();
   }
 
   getProductName(event: any, index: number) {
     const item = this.getProductSelected(event.target.value, this.products)[0];
-    console.log(item);
-    (this.productos.at(index) as UntypedFormGroup).controls.producto.patchValue(item.producto);
-    (this.productos.at(index) as UntypedFormGroup).controls.precio.patchValue(item.precio);
-    (this.productos.at(index) as UntypedFormGroup).controls.presentacion.patchValue(item.presentacion);
-    (this.productos.at(index) as UntypedFormGroup).controls.id_unidad.patchValue(item.id_unidad);
+    (this.productos.at(index) as FormGroup).controls.producto.patchValue(item.producto);
+    (this.productos.at(index) as FormGroup).controls.precio.patchValue(item.precio);
+    (this.productos.at(index) as FormGroup).controls.presentacion.patchValue(item.presentacion);
+    (this.productos.at(index) as FormGroup).controls.id_unidad.patchValue(item.id_unidad);
   }
 
   getProductSelected(id, object) {
@@ -119,19 +127,19 @@ export class ShoppingComponent implements OnInit {
   }
 
   initProduct() {
-    return new UntypedFormGroup({
-      id_producto: new UntypedFormControl(0, [ Validators.required ]),
-      producto: new UntypedFormControl('', [ Validators.required ]),
-      cantidad: new UntypedFormControl(0, [ Validators.required ]),
-      precio: new UntypedFormControl(0, [ Validators.required ]),
-      subtotal: new UntypedFormControl(0, [ Validators.required ]),
-      presentacion: new UntypedFormControl('', [ Validators.required ]),
-      id_unidad: new UntypedFormControl(0, [ Validators.required ])
+    return new FormGroup({
+      id_producto: new FormControl(0, [ Validators.required ]),
+      producto: new FormControl('', [ Validators.required ]),
+      cantidad: new FormControl(0, [ Validators.required ]),
+      precio: new FormControl(0, [ Validators.required ]),
+      subtotal: new FormControl(0, [ Validators.required ]),
+      presentacion: new FormControl('', [ Validators.required ]),
+      id_unidad: new FormControl(0, [ Validators.required ])
     });
   }
 
   get productos() {
-    return this.shoppingForm && this.shoppingForm.get('productos') as UntypedFormArray;
+    return this.shoppingForm && this.shoppingForm.get('productos') as FormArray;
   }
 
   addNewProduct() {
@@ -159,12 +167,13 @@ export class ShoppingComponent implements OnInit {
 
   async resetForm() {
     this.action = 'new';
-    this.shoppingForm = new UntypedFormGroup({
-      id_almacen: new UntypedFormControl(null, [ Validators.required ]),
-      id_proveedor: new UntypedFormControl(null, [ Validators.required ]),
-      fecha: new UntypedFormControl(null, [ Validators.required ]),
-      total: new UntypedFormControl(0, [ Validators.required ]),
-      productos: new UntypedFormArray([ this.initProduct() ])
+    this.shoppingForm = new FormGroup({
+      id: new FormControl(0, []),
+      id_almacen: new FormControl(null, [ Validators.required ]),
+      id_proveedor: new FormControl(null, [ Validators.required ]),
+      fecha: new FormControl(''),
+      total: new FormControl(0, [ Validators.required ]),
+      productos: new FormArray([ this.initProduct() ])
     });
   }
 
@@ -180,7 +189,6 @@ export class ShoppingComponent implements OnInit {
       id_unidad: sessionStorage.getItem('id_unidad'),
       estatus: sessionStorage.getItem('estatus')
     };
-    console.log(oProduct);
     return oProduct;
   }
 
@@ -192,7 +200,6 @@ export class ShoppingComponent implements OnInit {
       }
     };
     const response: ProductListResponse = await this.protectedService.retrieveProduct(allProductsRequest);
-    console.log(response);
     this.shoppings = response.productos;
   }
 
@@ -262,12 +269,19 @@ export class ShoppingComponent implements OnInit {
     return this.shoppingForm.controls;
   }
 
+  removeFakeFields(products: any) {
+    for (let product of products) {
+      delete product.id_compra;
+      delete product.subtotal;
+    }
+  }
+
   async onSave() {
-    console.log(this.shoppingForm.value);
     await this.spinner.show('sp');
     if (this.shoppingForm.invalid) {
+      await this.spinner.hide('sp');
       return Object.values(this.shoppingForm.controls).forEach((control) => {
-        if (control instanceof UntypedFormGroup) {
+        if (control instanceof FormGroup) {
           Object.values(control.controls).forEach((control) =>
             control.markAsTouched()
           );
@@ -278,7 +292,6 @@ export class ShoppingComponent implements OnInit {
     }
 
     const values = this.shoppingForm.value;
-    console.log(values);
     try {
       this.tokenRequest = {
         json: {
@@ -305,22 +318,21 @@ export class ShoppingComponent implements OnInit {
                   id_proveedor: values.id_proveedor,
                   id_almacen: values.id_almacen,
                   id_user: this.userId,
-                  total: values.total,
-                  fecha: this.globalService.formatDateToStringYY_MM_DD_HH_mm_ss(new Date())
+                  total: `${values.total}`,
+                  fecha: this.globalService.formatDateToStringYY_MM_DD_HH_mm_ss(values.fecha)
                 },
                 productos: values.productos
               },
               add_token: tokenResponse.add_token
             }
           };
-
-          console.log(this.shoppingAddRequest);
           response = await this.protectedService.saveShopping(this.shoppingAddRequest);
           this.shoppingForm.reset(this.resetProduct());
           break;
 
         case 'edit':
           tokenResponse = await this.authenticationService.tokenEdit(this.tokenRequest);
+          this.removeFakeFields(values.productos);
           this.shoppingEditRequest = {
             json: {
               user_data: {
@@ -328,15 +340,15 @@ export class ShoppingComponent implements OnInit {
                 user_active: 1
               },
               edit_data: {
-                id_compra: '0',
+                id_compra: values.id,
                 compra: {
-                  id_proveedor: '1',
-                  id_almacen: '2',
-                  id_user: '1',
-                  total: '44.444',
-                  fecha: '2022-07-26 00:08:44'
+                  id_proveedor: values.id_proveedor,
+                  id_almacen: values.id_almacen,
+                  id_user: this.userId,
+                  total: values.total,
+                  fecha: this.globalService.formatDateToStringYY_MM_DD_HH_mm_ss(values.fecha)
                 },
-                productos: []
+                productos: values.productos
               },
               edit_token: tokenResponse.edit_token
             }
@@ -364,31 +376,51 @@ export class ShoppingComponent implements OnInit {
     }
   }
 
-  /*loadProductForm(shopping: Compra) {
-    this.shoppingForm.reset({
-      producto: product.producto,
-      id_prov: product.id_prov,
-      id_clasif: product.id_clasif,
-      max: product.max,
-      min: product.min,
-      existencias: product.existencias,
-      presentacion: product.presentacion,
-      id_unidad: product.id_unidad,
-      estatus: +product.estatus === 1
+  newProduct(product: Prod): FormGroup {
+    return this.fb.group({
+      id_producto: new FormControl(product.id_producto, [ Validators.required ]),
+      producto: new FormControl(product.producto, [ Validators.required ]),
+      cantidad: new FormControl(product.cantidad, [ Validators.required ]),
+      precio: new FormControl(product.precio, [ Validators.required ]),
+      presentacion: new FormControl(product.presentacion, [ Validators.required ]),
+      id_unidad: new FormControl(product.id_unidad, [ Validators.required ]),
+      id_compra: new FormControl(product.id_compra, [ Validators.required ]),
+      subtotal: new FormControl((+product.cantidad * +product.precio), [ Validators.required ])
     });
-  }*/
+  }
 
-  editShopping(shopping: Compra) {
+  async loadProductForm(shopping: Compra) {
+    console.log(shopping);
+    this.date = new FormControl(this.globalService.parseStringToDate(this.globalService.formatDateToStringYY_MM_DD_HH_mm_ss(shopping.fecha)));
+    this.shoppingForm.reset({
+      // id: 0,
+      id_almacen: shopping.id_almacen, // new FormControl(shopping.id_almacen, Validators.required),
+      id_proveedor: shopping.id_proveedor, // new FormControl(shopping.id_proveedor, Validators.required),
+      // fecha: shopping.fecha, // new FormControl(moment(shopping.fecha, "DD-MM-YYYY"), Validators.required),
+      total: shopping.total, // new FormControl(shopping.total, Validators.required),
+      productos: this.fb.array([])
+    });
+    this.shoppingForm.controls['fecha'].setValue(new Date(new Date(shopping.fecha).getTime()));
+    this.shoppingForm.controls['id'].setValue(shopping.id);
+
+    let p = this.shoppingForm.get('productos') as FormArray;
+    p.clear();
+    for (let product of shopping.productos) {
+      p.push(this.newProduct(product));
+    }
+  }
+
+  async editShopping(shopping: Compra) {
     this.shopping = shopping;
     this.setAction('edit');
-    // this.loadProductForm(shopping);
+    await this.loadProductForm(shopping);
   }
 
   selectShopping(shopping: Compra) {
     this.shopping = shopping;
   }
 
-  async removeProduct() {
+  async removeShopping() {
     try {
       await this.spinner.show('sr');
       this.tokenRequest = {
@@ -407,14 +439,15 @@ export class ShoppingComponent implements OnInit {
             user_active: 1
           },
           del_data: {
-            id_prod: +this.product.id_prod
+            id: +this.shopping.id
           },
           del_token: tokenResponse.del_token
         }
       };
-      const response = await this.protectedService.removeProduct(this.tokenRemoveRequest);
+      const response = await this.protectedService.removeShopping(this.tokenRemoveRequest);
       console.log(response);
       await this.retrieveShoppings();
+      this.resetForm();
       // this.shoppingForm.reset(this.resetProduct());
       await this.spinner.hide('sr');
       this.closeModal();

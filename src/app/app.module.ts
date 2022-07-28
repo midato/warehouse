@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthenticationInterceptorService } from './anonymous/interceptors/authentication-interceptor.service';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +30,7 @@ import { ResetPasswordComponent } from './anonymous/components/reset-password/re
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,

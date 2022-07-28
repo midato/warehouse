@@ -7,10 +7,12 @@ import * as moment from 'moment';
 })
 export class GlobalService {
 
-  constructor() { }
+  constructor() {
+  }
 
   parseDateToString(dataParam: Date): string {
-    return moment(dataParam).format('YYYY-MM-DD');
+    // return moment(dataParam).format('YYYY-MM-DD');
+    return moment(dataParam).format('DD/MM/YYYY');
   }
 
   parseStringToDate(stringParam: string): Date {
@@ -18,16 +20,11 @@ export class GlobalService {
   }
 
   formatDateToStringYY_MM_DD_HH_mm_ss(dataParam: Date): string {
-    return moment(dataParam).format('YYYY-MM-DD HH:mm:ss');
+    return moment(dataParam).format('YYYY-MM-DD') + ' ' + moment(new Date(), 'HHmmss').format('HH:mm:ss');
   }
 
   parseDateToGlobalFormat(dataParam: Date): string {
-    return moment(dataParam).format('YYYY/MM/DD');
+    return moment(dataParam).format('YYYY-MM-DD HH:mm:ss');
   }
-
-  getHomeSelectedCurrency() {
-    return localStorage.getItem('selcurr')!;
-  }
-
 
 }

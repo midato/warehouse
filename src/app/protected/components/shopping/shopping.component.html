@@ -14,9 +14,6 @@
 
   <div *ngFor="let shopping of shoppings; index as i; first as isFirst"
        class="cardClasif">
-    <!--<div>
-      Compra: {{shopping | json}}
-    </div>-->
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
          data-bs-target="#shoppingModal"
@@ -44,16 +41,12 @@
           <p class="form-control text-center fw-bold">{{shopping.total}}</p>
         </div>
 
-        <div>
-          <input [matDatepicker]="myDatepicker">
-          <mat-datepicker #myDatepicker></mat-datepicker>
-        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- New/Edit Product Modal -->
+<!-- New/Edit Shopping Modal -->
 <div class="modal fade"
      id="shoppingModal"
      tabindex="-1"
@@ -111,17 +104,20 @@
             <div class="col">
               <div class="input-group mb-3">
                 <label class="input-group-text" for="supplier">Fecha</label>
-
-                <input [matDatepicker]="myDatepicker">
-                <mat-datepicker #myDatepicker></mat-datepicker>
-
-
-
-
-
+                <mat-form-field>
+                  <input matInput
+                         id="fecha"
+                         name="fecha"
+                         [matDatepicker]="picker"
+                         formControlName="fecha"
+                         [formControl]="date"
+                         placeholder="">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
               </div>
               <div class="text-danger mb-3"
-                   *ngIf="formShoppingReference.id_almacen.touched && formShoppingReference.id_almacen.errors?.required">
+                   *ngIf="formShoppingReference.fecha.touched && formShoppingReference.fecha.errors?.required">
                 * La fecha es obligatoria
               </div>
             </div>
@@ -275,9 +271,9 @@
           >
             Cerrar
           </button>
+          <!--                  [disabled]="shoppingForm.invalid"-->
           <button type="button"
                   class="btn btn-primary"
-                  [disabled]="shoppingForm.invalid"
                   (click)="onSave()"
           >
             Guardar Cambios
@@ -288,22 +284,22 @@
   </form>
 </div>
 
-<!-- Remove Product Modal -->
-<!--<div class="modal fade"
-     id="productRemoveModal"
+<!-- Remove Shopping Modal -->
+<div class="modal fade"
+     id="shoppingRemoveModal"
      tabindex="-1"
      role="dialog"
-     aria-labelledby="productRemoveModalLabel"
+     aria-labelledby="shoppingRemoveModalLabel"
      aria-hidden="true"
      [ngStyle]="{'modal':modal}"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="productRemoveModalLabel">Borrar usuario</h5>
-        &lt;!&ndash;<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="shoppingRemoveModalLabel">Borrar usuario</h5>
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
-        </button>&ndash;&gt;
+        </button>-->
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -322,13 +318,13 @@
         </button>
         <button type="button"
                 class="btn btn-primary"
-                (click)="removeProduct()"
+                (click)="removeShopping()"
         >
           Si
         </button>
       </div>
     </div>
   </div>
-</div>-->
+</div>
 
 <app-spinner layerName="gral" [fullScreen]=false></app-spinner>

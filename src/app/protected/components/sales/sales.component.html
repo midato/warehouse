@@ -1,44 +1,44 @@
 <div
   class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Compras</h1>
+  <h1 class="h2">Ventas</h1>
 </div>
 <div id="container" class="container">
   <div id="add"
        class="bg-primary rounded-circle d-flex"
        data-bs-toggle="modal"
-       data-bs-target="#shoppingModal"
+       data-bs-target="#saleModal"
        (click)="resetForm()"
   >
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let shopping of shoppings; index as i; first as isFirst"
+  <div *ngFor="let sale of sales; index as i; first as isFirst"
        class="cardClasif">
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
-         data-bs-target="#shoppingModal"
-         (click)="editShopping(shopping)">
+         data-bs-target="#saleModal"
+         (click)="editSale(sale)">
         <i class="fa-solid fa-pen me-3"></i>
       </a>
       <a data-bs-toggle="modal"
-         data-bs-target="#shoppingRemoveModal"
-         (click)="selectShopping(shopping)">
+         data-bs-target="#saleRemoveModal"
+         (click)="selectSale(sale)">
         <i class="fa-regular fa-trash-can text-danger"></i>
       </a>
     </div>
     <div class="card-body">
-      <p class="text-center fw-bold">FECHA de COMPRA</p>
-      <h5 class="card-title">{{shopping.fecha}}</h5>
+      <p class="text-center fw-bold">FECHA de VENTA</p>
+      <h5 class="card-title">{{sale.fecha}}</h5>
       <div class="d-flex align-items-center" style="height: 75px;">
 
         <div style="display: block; margin-left: 1px; margin-right: 1px; width: 50%">
           <p class="text-center fw-bold">PRODUCTOS</p>
-          <p class="form-control text-center fw-bold">{{shopping.productos.length}}</p>
+          <p class="form-control text-center fw-bold">{{sale.productos.length}}</p>
         </div>
 
         <div style="display: block; margin-left: 1px; margin-right: 1px;; width: 50%">
           <p class="text-center fw-bold">TOTAL</p>
-          <p class="form-control text-center fw-bold">{{shopping.total | currency}}</p>
+          <p class="form-control text-center fw-bold">{{sale.total | currency}}</p>
         </div>
 
       </div>
@@ -46,46 +46,46 @@
   </div>
 </div>
 
-<!-- New/Edit Shopping Modal -->
+<!-- New/Edit Sale Modal -->
 <div class="modal fade"
-     id="shoppingModal"
+     id="saleModal"
      tabindex="-1"
-     aria-labelledby="shoppingModalLabel"
+     aria-labelledby="saleModalLabel"
      aria-hidden="true">
   <form
-    id="shoppingEForm"
+    id="saleEForm"
     autocomplete="off"
-    [formGroup]="shoppingForm"
+    [formGroup]="saleForm"
   >
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="shoppingModalLabel">Nueva compra</h5>
+          <h5 class="modal-title" id="saleModalLabel">Nueva venta</h5>
           <!-- button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button -->
         </div>
         <div class="modal-body">
           <div class="row">
             <div class="col">
               <div class="input-group mb-3">
-                <label class="input-group-text" for="supplier">Proveedor</label>
+                <label class="input-group-text" for="customer">Cliente</label>
                 <select class="form-select"
-                        id="supplier"
-                        name="supplier"
-                        formControlName="id_proveedor"
+                        id="customer"
+                        name="customer"
+                        formControlName="id_cliente"
                 >
                   <option [value]="null">Elegir...</option>
-                  <option *ngFor="let supplier of suppliers"
-                          [value]="supplier.id_prov">{{supplier.nombre}}</option>
+                  <option *ngFor="let customer of customers"
+                          [value]="customer.id_clie">{{customer.nombre}}</option>
                 </select>
               </div>
               <div class="text-danger mb-3"
-                   *ngIf="formShoppingReference.id_proveedor.touched && formShoppingReference.id_proveedor.errors?.required">
-                * El proveedor es obligatorio
+                   *ngIf="formSaleReference.id_cliente.touched && formSaleReference.id_cliente.errors?.required">
+                * El cliente es obligatorio
               </div>
             </div>
             <div class="col">
               <div class="input-group mb-3">
-                <label class="input-group-text" for="supplier">Almacén</label>
+                <label class="input-group-text" for="customer">Almacén</label>
                 <select class="form-select"
                         id="stock"
                         name="stock"
@@ -97,13 +97,13 @@
                 </select>
               </div>
               <div class="text-danger mb-3"
-                   *ngIf="formShoppingReference.id_almacen.touched && formShoppingReference.id_almacen.errors?.required">
-                * El proveedor es obligatorio
+                   *ngIf="formSaleReference.id_almacen.touched && formSaleReference.id_almacen.errors?.required">
+                * El cliente es obligatorio
               </div>
             </div>
             <div class="col">
               <div class="input-group mb-3">
-                <label class="input-group-text" for="supplier">Fecha</label>
+                <label class="input-group-text" for="customer">Fecha</label>
                 <mat-form-field>
                   <input matInput
                          id="fecha"
@@ -117,7 +117,7 @@
                 </mat-form-field>
               </div>
               <div class="text-danger mb-3"
-                   *ngIf="formShoppingReference.fecha.touched && formShoppingReference.fecha.errors?.required">
+                   *ngIf="formSaleReference.fecha.touched && formSaleReference.fecha.errors?.required">
                 * La fecha es obligatoria
               </div>
             </div>
@@ -135,7 +135,7 @@
                 >
               </div>
               <div class="text-danger mb-3"
-                   *ngIf="formShoppingReference.total.touched && formShoppingReference.total.errors?.required">
+                   *ngIf="formSaleReference.total.touched && formSaleReference.total.errors?.required">
                 * El total es obligatorio
               </div>
             </div>
@@ -147,7 +147,7 @@
               <div style="margin-top: 15px">
                 <div class="row d-flex panel-heading text-bold" style="margin-top: 0; font-size: 20px">
                   <div class="col text-center">
-                    DETALLE DE LA COMPRA
+                    DETALLE DE LA VENTA
                   </div>
                 </div>
 
@@ -238,7 +238,7 @@
                             </select>
                           </div>
                           <!--<div class="text-danger mb-3"
-                               *ngIf="formShoppingReference.id_unidad.touched && formShoppingReference.id_unidad.errors?.required">
+                               *ngIf="formSaleReference.id_unidad.touched && formSaleReference.id_unidad.errors?.required">
                             * El producto es obligatorio
                           </div>-->
                         </td>
@@ -271,7 +271,7 @@
           >
             Cerrar
           </button>
-          <!--                  [disabled]="shoppingForm.invalid"-->
+          <!--                  [disabled]="saleForm.invalid"-->
           <button type="button"
                   class="btn btn-primary"
                   (click)="onSave()"
@@ -284,19 +284,19 @@
   </form>
 </div>
 
-<!-- Remove Shopping Modal -->
+<!-- Remove Sale Modal -->
 <div class="modal fade"
-     id="shoppingRemoveModal"
+     id="saleRemoveModal"
      tabindex="-1"
      role="dialog"
-     aria-labelledby="shoppingRemoveModalLabel"
+     aria-labelledby="saleRemoveModalLabel"
      aria-hidden="true"
      [ngStyle]="{'modal':modal}"
 >
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="shoppingRemoveModalLabel">Borrar usuario</h5>
+        <h5 class="modal-title" id="saleRemoveModalLabel">Borrar usuario</h5>
         <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>-->
@@ -318,7 +318,7 @@
         </button>
         <button type="button"
                 class="btn btn-primary"
-                (click)="removeShopping()"
+                (click)="removeSale()"
         >
           Si
         </button>

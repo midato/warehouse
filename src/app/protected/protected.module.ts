@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { NgxSpinnerModule } from 'ngx-spinner';
@@ -22,6 +22,7 @@ import { UsersComponent } from './components/users/users.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { UnitsComponent } from './components/units/units.component';
 import { ShoppingComponent } from './components/shopping/shopping.component';
+import { SalesComponent } from './components/sales/sales.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ShoppingComponent } from './components/shopping/shopping.component';
     UsersComponent,
     CustomersComponent,
     UnitsComponent,
-    ShoppingComponent
+    ShoppingComponent,
+    SalesComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +51,8 @@ import { ShoppingComponent } from './components/shopping/shopping.component';
     SharedModule,
     SharedRoutingModule,
     NgxSpinnerModule
-  ]
+  ],
+  providers: [ CurrencyPipe ]
 })
 export class ProtectedModule {
 }

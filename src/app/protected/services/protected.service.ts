@@ -51,6 +51,13 @@ import { ShoppingEditRequest } from '../interfaces/shopping-edit-request.interfa
 import { ShoppingEditResponse } from '../interfaces/shopping-edit-response.interface';
 import { ShoppingRemoveRequest } from '../interfaces/shopping-remove-request.interface';
 import { ShoppingRemoveResponse } from '../interfaces/shopping-remove-response.interface';
+import { SaleListResponse } from '../interfaces/sale-list-response.interface';
+import { SaleAddResponse } from '../interfaces/sale-add-response.interface';
+import { SaleAddRequest } from '../interfaces/sale-add-request.interface';
+import { SaleEditRequest } from '../interfaces/sale-edit-request.interface';
+import { SaleEditResponse } from '../interfaces/sale-edit-response.interface';
+import { SaleRemoveRequest } from '../interfaces/sale-remove-request.interface';
+import { SaleRemoveResponse } from '../interfaces/sale-remove-response.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -67,8 +74,30 @@ export class ProtectedService {
   ) {
   }
 
+  // SALES
+  retrieveSales(body: any): Promise<SaleListResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_ventas/get_ventas/`;
+    return this.http.post<SaleListResponse>(baseUrl, body).toPromise();
+  }
+
+  saveSale(body: SaleAddRequest): Promise<SaleAddResponse> {
+    console.log(body);
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_ventas/agregar_venta`;
+    return this.http.post<SaleAddResponse>(baseUrl, body).toPromise();
+  }
+
+  editSale(body: SaleEditRequest): Promise<SaleEditResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_ventas/editar_venta`;
+    return this.http.post<SaleEditResponse>(baseUrl, body).toPromise();
+  }
+
+  removeSale(body: SaleRemoveRequest): Promise<SaleRemoveResponse> {
+    const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_ventas/borrar_venta`;
+    return this.http.post<SaleRemoveResponse>(baseUrl, body).toPromise();
+  }
+
   // SHOPPINGS
-  retrieveShopping(body: any): Promise<ShoppingListResponse> {
+  retrieveShoppings(body: any): Promise<ShoppingListResponse> {
     const baseUrl = `${this.NG_APP_EWH_BASE_URL}${this.NG_APP_EWH_VERSION}/index.php/modules/cont_compras/get_compras/`;
     return this.http.post<ShoppingListResponse>(baseUrl, body).toPromise();
   }

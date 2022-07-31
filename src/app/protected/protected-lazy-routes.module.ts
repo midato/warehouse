@@ -10,6 +10,7 @@ import { StocksComponent } from './components/stocks/stocks.component';
 import { AuthenticationGuard } from '../anonymous/guards/authentication.guard';
 import { UnitsComponent } from './components/units/units.component';
 import { ShoppingComponent } from './components/shopping/shopping.component';
+import { SalesComponent } from './components/sales/sales.component';
 
 const lazyProtectedRoutes: Routes = [
   {
@@ -65,6 +66,12 @@ const lazyProtectedRoutes: Routes = [
     component: ShoppingComponent,
     canActivate: [ AuthenticationGuard ],
     data: {optionMenuLabel: 'Compras', optionBanner: true, breadcrumbs: true}
+  },
+  {
+    path: 'sale',
+    component: SalesComponent,
+    canActivate: [ AuthenticationGuard ],
+    data: {optionMenuLabel: 'Ventas', optionBanner: true, breadcrumbs: true}
   },
 
   {path: '', redirectTo: 'protected', pathMatch: 'full'}

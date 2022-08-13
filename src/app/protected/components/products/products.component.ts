@@ -199,7 +199,7 @@ export class ProductsComponent implements OnInit {
                 id_clasif: +this.productForm.value.id_clasif,
                 max: this.productForm.value.max,
                 min: this.productForm.value.min,
-                existencias: this.productForm.value.existencias,
+                existencias: +this.productForm.value.existencias,
                 presentacion: this.productForm.value.presentacion,
                 id_unidad: +this.productForm.value.id_unidad,
                 estatus: this.productForm.value.estatus ? 1 : 0

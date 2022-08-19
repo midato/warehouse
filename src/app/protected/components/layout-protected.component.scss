@@ -3,6 +3,6 @@
   padding-top: 0 !important;
 }
 
-
-
-
+::ng-deep .row > * {
+  padding: 0 !important;
+}

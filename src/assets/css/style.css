@@ -46,6 +46,7 @@ File: scss
  *  8. Custom Templates
  */
 @import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700");
+
 /*******************
 Global Styles
 *******************/
@@ -2006,13 +2007,13 @@ ul#themecolors li a.working:before {
 *******************/
 .footer {
   bottom: 0;
-  color: #67757c;
+  color: #ffffff;
   left: 0px;
   padding: 17px 15px;
   position: absolute;
   right: 0;
   border-top: 1px solid rgba(120, 130, 140, 0.13);
-  background: #ffffff;
+  background: #000000;
 }
 
 /*******************

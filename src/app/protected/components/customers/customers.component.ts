@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { Subject } from 'rxjs';
 
 import { Alerts } from '../../../shared/utils';
 
@@ -22,6 +23,15 @@ import { AuthenticationService } from '../../../anonymous/services/authenticatio
 export class CustomersComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   customerForm: UntypedFormGroup;
   customer: Cliente;
@@ -49,10 +59,33 @@ export class CustomersComponent implements OnInit {
     this.spinner.show('gral');
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
+
     setTimeout(async () => {
       await this.retrieveCustomers();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   closeModal() {
@@ -89,6 +122,7 @@ export class CustomersComponent implements OnInit {
     const response: CustomerListResponse = await this.protectedService.retrieveCustomer(allCustomersRequest);
     console.log(response);
     this.customers = response.clientes;
+    this.dtTrigger.next(null);
   }
 
   get formCustomerReference() {

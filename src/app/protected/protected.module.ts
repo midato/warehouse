@@ -9,6 +9,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+import { DataTablesModule } from 'angular-datatables';
+
 import { SharedModule } from '../shared/shared.module';
 import { SharedRoutingModule } from '../shared/shared-routing.module';
 
@@ -50,7 +52,8 @@ import { SalesComponent } from './components/sales/sales.component';
 
     SharedModule,
     SharedRoutingModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    DataTablesModule
   ],
   providers: [ CurrencyPipe ]
 })

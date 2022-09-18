@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let ranking of rankings; index as i; first as isFirst"
+  <!--<div *ngFor="let ranking of rankings; index as i; first as isFirst"
        class="cardClasif"
        style="max-width: 230px;">
     <div class="card-header d-flex justify-content-end">
@@ -29,7 +29,7 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{ranking.clasificacion}}</h5>
-      <!--<a class="btn btn-primary mt-3"
+      &lt;!&ndash;<a class="btn btn-primary mt-3"
          data-bs-toggle="modal"
          data-bs-target="#rankingModal"
          (click)="editRanking(ranking)"
@@ -42,9 +42,41 @@
          (click)="selectRanking(ranking)"
       >
         Borrar
-      </a>-->
+      </a>&ndash;&gt;
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ranking of rankings">
+      <td>{{ ranking.id_clasif }}</td>
+      <td>{{ ranking.clasificacion }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#rankingModal"
+           (click)="editRanking(ranking)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#rankingRemoveModal"
+           (click)="selectRanking(ranking)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
 

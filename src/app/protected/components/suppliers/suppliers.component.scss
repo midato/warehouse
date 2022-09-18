@@ -2,3 +2,45 @@
   width: 300px !important;
   height: 100px !important;
 }
+
+// DATA TABLES
+
+::ng-deep .dataTables_wrapper {
+  font-family: Montserrat, sans-serif;
+  font-size: 1.2em;
+  top: -45px;
+}
+
+::ng-deep .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+  margin-bottom: 15px;
+}
+
+::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  border-radius: 50%;
+}
+
+::ng-deep .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  border-radius: 50%;
+}
+
+::ng-deep .dataTables_wrapper .dataTables_filter input {
+  border: 0;
+}
+
+::ng-deep .dataTables_wrapper .dataTables_length select {
+  border: 0;
+}
+
+.dt-column-center {
+  text-align: center;
+}
+
+.dt-column-center a {
+  cursor: pointer;
+}
+
+.dt-column-center a i {
+  font-size: 1.2em;
+}
+
+// DATA TABLES

@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let shopping of shoppings; index as i; first as isFirst"
+  <!--<div *ngFor="let shopping of shoppings; index as i; first as isFirst"
        class="cardClasif">
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
@@ -43,7 +43,44 @@
 
       </div>
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Fecha de Compra</th>
+      <th>Productos</th>
+      <th>Total</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let shopping of shoppings">
+      <td>{{ shopping.id }}</td>
+      <td>{{ shopping.fecha | uppercase }}</td>
+      <td>{{ shopping.productos.length }}</td>
+      <td>{{ shopping.total | uppercase }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#shoppingModal"
+           (click)="editShopping(shopping)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#shoppingRemoveModal"
+           (click)="selectShopping(shopping)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
 
 <!-- New/Edit Shopping Modal -->

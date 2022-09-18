@@ -17,6 +17,7 @@ import { ProductRemoveRequest } from '../../interfaces/product-remove-request.in
 import { Proveedor, SupplierListResponse } from '../../interfaces/supplier-list-response.interface';
 import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
 import { Unidad, UnitListResponse } from '../../interfaces/unit-list-response.interface';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -24,8 +25,16 @@ import { Unidad, UnitListResponse } from '../../interfaces/unit-list-response.in
   styleUrls: [ './products.component.scss' ]
 })
 export class ProductsComponent implements OnInit {
-
   @ViewChild('closeButton') closeButton;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   productForm: UntypedFormGroup;
   product: Producto;
@@ -56,6 +65,25 @@ export class ProductsComponent implements OnInit {
     this.spinner.show('gral');
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
+
     setTimeout(async () => {
       await this.retrieveProducts();
       await this.retrieveSuppliers();
@@ -63,6 +91,10 @@ export class ProductsComponent implements OnInit {
       await this.retrieveUnits();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   closeModal() {
@@ -114,6 +146,8 @@ export class ProductsComponent implements OnInit {
     const response: ProductListResponse = await this.protectedService.retrieveProduct(allProductsRequest);
     console.log(response);
     this.products = response.productos;
+    this.dtTrigger.next(null);
+
   }
 
   async retrieveSuppliers() {

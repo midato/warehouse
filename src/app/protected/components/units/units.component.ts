@@ -13,6 +13,7 @@ import { TokenRemoveRequest } from '../../../anonymous/interfaces/token-remove-r
 import { UnitAddRequest } from '../../interfaces/unit-add-request.interface';
 import { UnitEditRequest } from '../../interfaces/unit-edit-request.interface';
 import { Alerts } from '../../../shared/utils';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-units',
@@ -20,8 +21,16 @@ import { Alerts } from '../../../shared/utils';
   styleUrls: [ './units.component.scss' ]
 })
 export class UnitsComponent implements OnInit {
-
   @ViewChild('closeButton') closeButton;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   unitForm: UntypedFormGroup;
   unit: Unidad;
@@ -51,10 +60,32 @@ export class UnitsComponent implements OnInit {
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
 
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
+
     setTimeout(async () => {
       await this.retrieveUnits();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   closeModal() {
@@ -93,6 +124,7 @@ export class UnitsComponent implements OnInit {
     };
     const response: UnitListResponse = await this.protectedService.retrieveUnit(allUnitsRequest);
     this.units = response.unidades;
+    this.dtTrigger.next(null);
   }
 
   get formUnitReference() {

@@ -27,6 +27,7 @@ import { GlobalService } from '../../../shared/services/global.service';
 import { ShoppingEditRequest } from '../../interfaces/shopping-edit-request.interface';
 import { ShoppingRemoveRequest } from '../../interfaces/shopping-remove-request.interface';
 import { Alerts } from '../../../shared/utils';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-shopping',
@@ -34,9 +35,17 @@ import { Alerts } from '../../../shared/utils';
   styleUrls: [ './shopping.component.scss' ]
 })
 export class ShoppingComponent implements OnInit {
-
   @ViewChild('closeButton') closeButton;
   @ViewChild('closeButtonE') closeButtonE;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   shoppingForm: FormGroup;
   TotalRow: number;
@@ -77,6 +86,24 @@ export class ShoppingComponent implements OnInit {
     this.spinner.show('gral');
     this.userId = sessionStorage.getItem('pk');
 
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
+
     setTimeout(async () => {
       await this.retrieveSuppliers();
       await this.retrieveStocks();
@@ -85,6 +112,10 @@ export class ShoppingComponent implements OnInit {
       await this.retrieveShoppings();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   sum() {
@@ -226,6 +257,7 @@ export class ShoppingComponent implements OnInit {
     const response: ShoppingListResponse = await this.protectedService.retrieveShoppings(allShoppingsRequest);
     console.log(response);
     this.shoppings = response.compras;
+    this.dtTrigger.next(null);
   }
 
   async retrieveSuppliers() {

@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let customer of customers; index as i; first as isFirst"
+  <!--<div *ngFor="let customer of customers; index as i; first as isFirst"
        class="cardClasif"
        style="max-width: 230px;">
     <div class="card-header d-flex justify-content-end">
@@ -29,22 +29,40 @@
     </div>
     <div class="card-body">
       <h5 class="card-title">{{customer.nombre}}</h5>
-      <!--<a class="btn btn-primary mt-3"
-         data-bs-toggle="modal"
-         data-bs-target="#customerModal"
-         (click)="editCustomer(customer)"
-      >
-        Editar
-      </a>
-      <a class="btn btn-primary mt-3"
-         data-bs-toggle="modal"
-         data-bs-target="#customerRemoveModal"
-         (click)="selectCustomer(customer)"
-      >
-        Borrar
-      </a>-->
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let customer of customers">
+      <td>{{ customer.id_clie }}</td>
+      <td>{{ customer.nombre }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#customerModal"
+           (click)="editCustomer(customer)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#customerRemoveModal"
+           (click)="selectCustomer(customer)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
 

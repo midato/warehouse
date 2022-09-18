@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let sale of sales; index as i; first as isFirst"
+  <!--<div *ngFor="let sale of sales; index as i; first as isFirst"
        class="cardClasif">
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
@@ -40,7 +40,44 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Fecha de Compra</th>
+      <th>Productos</th>
+      <th>Total</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let sale of sales">
+      <td>{{ sale.id }}</td>
+      <td>{{ sale.fecha | uppercase }}</td>
+      <td>{{ sale.productos.length }}</td>
+      <td>{{ sale.total | uppercase }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#saleModal"
+           (click)="editSale(sale)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#saleRemoveModal"
+           (click)="selectSale(sale)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
 
 <!-- New/Edit Sale Modal -->

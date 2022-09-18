@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let unit of units; index as i; first as isFirst"
+  <!--<div *ngFor="let unit of units; index as i; first as isFirst"
        class="cardClasif"
        style="max-width: 230px;">
     <div class="card-header d-flex justify-content-end">
@@ -42,23 +42,44 @@
         </div>
 
       </div>
-
-      <!--<a class="btn btn-primary mt-3"
-         data-bs-toggle="modal"
-         data-bs-target="#unitModal"
-         (click)="editUnit(unit)"
-      >
-        Editar
-      </a>
-      <a class="btn btn-primary mt-3"
-         data-bs-toggle="modal"
-         data-bs-target="#unitRemoveModal"
-         (click)="selectUnit(unit)"
-      >
-        Borrar
-      </a>-->
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Unidad Base</th>
+      <th>Cantidad Base</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let unit of units">
+      <td>{{ unit.id }}</td>
+      <td>{{ unit.nombre | uppercase }}</td>
+      <td>{{ unit.unidad_base }}</td>
+      <td>{{ unit.cant_base | uppercase }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#unitModal"
+           (click)="editUnit(unit)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#unitRemoveModal"
+           (click)="selectUnit(unit)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
 

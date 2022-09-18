@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let stock of stocks; index as i; first as isFirst"
+  <!--<div *ngFor="let stock of stocks; index as i; first as isFirst"
        class="cardClasif"
        style="max-width: 230px;">
     <div class="card-header d-flex justify-content-end">
@@ -30,22 +30,40 @@
     <div class="card-body">
       <h5 class="card-title">{{stock.nombre}}</h5>
       <h6 class="card-subtitle">{{stock.descripcion}}</h6>
-      <!--<a class="btn btn-primary mt-3"
-         data-bs-toggle="modal"
-         data-bs-target="#stockModal"
-         (click)="editStock(stock)"
-      >
-        Editar
-      </a>
-      <a class="btn btn-primary mt-3"
-         data-bs-toggle="modal"
-         data-bs-target="#stockRemoveModal"
-         (click)="selectStock(stock)"
-      >
-        Borrar
-      </a>-->
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let stock of stocks">
+      <td>{{ stock.id }}</td>
+      <td>{{ stock.nombre | uppercase }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#stockModal"
+           (click)="editStock(stock)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#stockRemoveModal"
+           (click)="selectStock(stock)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
 
 </div>
 

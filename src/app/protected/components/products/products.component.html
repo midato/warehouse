@@ -12,7 +12,7 @@
     <span class="text-center">+</span>
   </div>
 
-  <div *ngFor="let product of products; index as i; first as isFirst"
+  <!--<div *ngFor="let product of products; index as i; first as isFirst"
        class="cardClasif">
     <div class="card-header d-flex justify-content-end">
       <a data-bs-toggle="modal"
@@ -42,7 +42,40 @@
 
       </div>
     </div>
-  </div>
+  </div>-->
+
+  <table datatable
+         [dtOptions]="dtOptions"
+         [dtTrigger]="dtTrigger"
+         class="row-border hover stripe"
+  >
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.id_prod }}</td>
+      <td>{{ product.producto | uppercase }}</td>
+      <td class="dt-column-center">
+        <a data-bs-toggle="modal"
+           data-bs-target="#productModal"
+           (click)="editProduct(product)">
+          <i class="fa-solid fa-pen me-3"></i>
+        </a>
+        <a data-bs-toggle="modal"
+           data-bs-target="#productRemoveModal"
+           (click)="selectProduct(product)">
+          <i class="fa-regular fa-trash-can text-danger"></i>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
 </div>
 
 <!-- New/Edit Product Modal -->

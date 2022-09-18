@@ -12,6 +12,7 @@ import { ProtectedService } from '../../services/protected.service';
 import { Almacen, StockListResponse } from '../../interfaces/stock-list-response.interface';
 import { StockEditRequest } from '../../interfaces/stock-edit-request.interface';
 import { TokenRemoveRequest } from '../../../anonymous/interfaces/token-remove-request.interface';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-stocks',
@@ -20,7 +21,15 @@ import { TokenRemoveRequest } from '../../../anonymous/interfaces/token-remove-r
 })
 export class StocksComponent implements OnInit {
   @ViewChild('closeButton') closeButton;
-  // @ViewChild('stockModal') stockModal;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   stockForm: UntypedFormGroup;
   stock: Almacen;
@@ -49,16 +58,33 @@ export class StocksComponent implements OnInit {
 
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
-    /*this.stockForm = this.fb.group({
-      nombre: [ '', [ Validators.required ] ],
-      descripcion: [ '', Validators.required ],
-      estatus: [ false, Validators.required ]
-    });*/
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
 
     setTimeout(async () => {
       await this.retrieveStocks();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   closeModal() {
@@ -101,6 +127,7 @@ export class StocksComponent implements OnInit {
     };
     const response: StockListResponse = await this.protectedService.retrieveStock(allStocksRequest);
     this.stocks = response.almacenes;
+    this.dtTrigger.next(null);
   }
 
   get formStockReference() {

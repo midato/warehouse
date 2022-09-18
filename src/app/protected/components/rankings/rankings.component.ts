@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+
 import { Clasificacion, RankingListResponse } from '../../interfaces/ranking-list-response.interface';
 import { TokenRequest } from '../../../anonymous/interfaces/token-request.interface';
 import { RankingRemoveRequest } from '../../../anonymous/interfaces/ranking-remove-request.interface';
@@ -19,7 +21,15 @@ import { Alerts } from '../../../shared/utils';
 export class RankingsComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
-  // @ViewChild('rankingModal') rankingModal;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   rankingForm: UntypedFormGroup;
   ranking: Clasificacion;
@@ -48,6 +58,30 @@ export class RankingsComponent implements OnInit {
 
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
+
+
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+      /*columns: [
+        {'width': '5%'}
+      ]*/
+      // pageLength: 2
+    };
+
     /*this.rankingForm = this.fb.group({
       clasificacion: [ '', [ Validators.required ] ],
       status: [ false, Validators.required ]
@@ -57,6 +91,10 @@ export class RankingsComponent implements OnInit {
       await this.retrieveRankings();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   closeModal() {
@@ -93,6 +131,7 @@ export class RankingsComponent implements OnInit {
     const response: RankingListResponse = await this.protectedService.retrieveRanking(allRankingsRequest);
     console.log(response);
     this.rankings = response.clasificaciones;
+    this.dtTrigger.next(null);
   }
 
   get formRankingReference() {

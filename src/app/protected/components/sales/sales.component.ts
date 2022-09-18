@@ -20,6 +20,7 @@ import { GlobalService } from '../../../shared/services/global.service';
 import { DateAdapter } from '@angular/material/core';
 import { Alerts } from '../../../shared/utils';
 import { CurrencyPipe } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-sales',
@@ -30,6 +31,15 @@ export class SalesComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
   @ViewChild('closeButtonE') closeButtonE;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   saleForm: FormGroup;
   TotalRow: number;
@@ -70,6 +80,24 @@ export class SalesComponent implements OnInit {
     this.spinner.show('gral');
     this.userId = sessionStorage.getItem('pk');
 
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
+
     setTimeout(async () => {
       await this.retrieveCustomers();
       await this.retrieveStocks();
@@ -78,6 +106,10 @@ export class SalesComponent implements OnInit {
       await this.retrieveSales();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   sum() {
@@ -217,6 +249,7 @@ export class SalesComponent implements OnInit {
     const response: SaleListResponse = await this.protectedService.retrieveSales(allSalesRequest);
     console.log(response);
     this.sales = response.ventas;
+    this.dtTrigger.next(null);
   }
 
   async retrieveCustomers() {

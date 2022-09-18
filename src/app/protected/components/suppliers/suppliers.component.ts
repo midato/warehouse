@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../../anonymous/services/authentication.service';
 import { ProtectedService } from '../../services/protected.service';
 import { Alerts } from '../../../shared/utils';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-suppliers',
@@ -19,6 +20,15 @@ import { Alerts } from '../../../shared/utils';
 export class SuppliersComponent implements OnInit {
 
   @ViewChild('closeButton') closeButton;
+
+  dtOptions: DataTables.Settings = {};
+  dtPaginate: DataTables.LanguagePaginateSettings = {
+    first: '|<',
+    next: '>',
+    previous: '<',
+    last: '>|'
+  };
+  dtTrigger: Subject<any> = new Subject<any>();
 
   supplierForm: UntypedFormGroup;
   supplier: Proveedor;
@@ -46,10 +56,39 @@ export class SuppliersComponent implements OnInit {
     this.spinner.show('gral');
     this.userId = sessionStorage.getItem('pk');
     this.resetForm();
+
+    this.setDtOptions();
+
     setTimeout(async () => {
       await this.retrieveSuppliers();
       await this.spinner.hide('gral');
     }, 100);
+  }
+
+  setDtOptions() {
+    console.log('dtOptions settings');
+    this.dtOptions = {
+      pagingType: 'full_numbers',
+      // pageLength: 10,
+      language: {
+        url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/es-MX.json',
+        paginate: this.dtPaginate
+      },
+      lengthMenu: [
+        10, 15, 30
+      ],
+      scrollY: '700',
+      autoWidth: false,
+      columnDefs: [
+        {'width': '5%', 'targets': 0},
+        {'width': '10%', 'targets': 2}
+      ],
+      retrieve: true
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 
   closeModal() {
@@ -86,6 +125,7 @@ export class SuppliersComponent implements OnInit {
     const response: SupplierListResponse = await this.protectedService.retrieveSupplier(allSuppliersRequest);
     console.log(response);
     this.suppliers = response.proveedores;
+    this.dtTrigger.next(null);
   }
 
   get formSupplierReference() {
@@ -181,6 +221,7 @@ export class SuppliersComponent implements OnInit {
   }
 
   editSupplier(supplier: Proveedor) {
+    console.log(supplier);
     this.supplier = supplier;
     this.setAction('edit');
     this.loadSupplierForm(supplier);
